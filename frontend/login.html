@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>EcoPlay Critics - Login</title>
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="logo">
+      <span>EcoPlay <strong>Critics</strong></span>
+    </div>
+
+    <nav>
+      <a href="#">Jogos</a>
+      <span>|</span>
+      <a href="#">Sobre Nós</a>
+      <span>|</span>
+      <a href="#">Ajuda</a>
+    </nav>
+
+    <div class="search-login">
+      <input type="text" placeholder="Procurar">
+      <button class="login-btn">Login</button>
+    </div>
+  </header>
+
+  <!-- LOGIN -->
+  <main class="container">
+    <h1>Login</h1>
+    <hr>
+
+    <form class="form-login" id="loginForm">
+      <input type="email" placeholder="Email" id="email" required>
+      <input type="password" placeholder="Senha" id="password" required>
+
+      <div class="options">
+        <label>
+          <input type="checkbox"> Mantenha-me conectado
+        </label>
+      </div>
+
+      <p>
+        Não tem uma conta? <a href="cadastro.html">Cadastre-se!</a><br>
+        <a href="#">Esqueci minha senha!</a>
+      </p>
+
+      <button type="submit">Login</button>
+    </form>
+  </main>
+
+  <script src="login.js"></script>
+</body>
+</html>
