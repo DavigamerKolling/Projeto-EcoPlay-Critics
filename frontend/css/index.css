@@ -1,0 +1,70 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background: white;
+  color: #222;
+}
+
+/* NAVBAR */
+.navbar {
+  background: black;
+  color: white;
+  padding: 15px 30px;
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  color: #2ecc71;
+  font-size: 22px;
+}
+
+/* HOME */
+.home {
+  height: calc(100vh - 60px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.home h1 {
+  font-size: 42px;
+  font-family: Georgia, serif;
+  margin-bottom: 20px;
+}
+
+.home p {
+  font-size: 18px;
+  margin-bottom: 40px;
+  color: #555;
+}
+
+.buttons {
+  display: flex;
+  gap: 20px;
+}
+
+.buttons a {
+  text-decoration: none;
+  padding: 14px 40px;
+  border-radius: 10px;
+  font-size: 18px;
+  background: #1e73ff;
+  color: white;
+  transition: 0.3s;
+}
+
+.buttons a:last-child {
+  background: #2ecc71;
+}
+
+.buttons a:hover {
+  opacity: 0.85;
+}

@@ -1,25 +1,52 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<title>EcoPlay Critics - Alterar Senha</title>
-<link rel="stylesheet" href="reset.css">
+  <meta charset="UTF-8">
+  <title>EcoPlay Critics - Alterar Senha</title>
+
+  <link rel="stylesheet" href="css/reset.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<header class="navbar">
-  <div class="logo">EcoPlay <strong>Critics</strong></div>
-</header>
+  <!-- ===== HEADER / NAVBAR ===== -->
+  <header class="navbar">
+    <div class="brand">
+      <img src="img/logo.png" alt="EcoPlay Critics" class="logo-img">
+    </div>
 
-<main class="container">
-  <h1>Alterar Senha</h1>
-  <hr>
+    <nav class="navlinks">
+      <a href="jogos.html">Jogos</a>
+      <span>|</span>
+      <a href="sobre.html">Sobre Nós</a>
+      <span>|</span>
+      <a href="ajuda.html">Ajuda</a>
+    </nav>
 
-  <input type="password" id="password" placeholder="Senha">
-  <input type="password" id="confirm" placeholder="Confirmar Senha">
-  <button onclick="resetar()">Alterar Senha</button>
-</main>
+    <div class="navright">
+      <div class="searchwrap">
+        <input type="text" placeholder="Procurar">
+        <span class="search-icon">🔍</span>
+      </div>
 
-<script src="js/reset.js"></script>
+      <a href="login.html" class="login-btn">Login</a>
+    </div>
+  </header>
+
+  <!-- ===== CONTEÚDO ===== -->
+  <main class="main">
+    <div class="card">
+      <h1>Alterar Senha</h1>
+      <div class="divider"></div>
+
+      <div class="form-reset">
+        <input type="password" id="password" placeholder="Senha" required>
+        <input type="password" id="confirm" placeholder="Confirmar Senha" required>
+        <button type="button" onclick="resetar()">Alterar Senha</button>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/reset.js"></script>
 </body>
 </html>

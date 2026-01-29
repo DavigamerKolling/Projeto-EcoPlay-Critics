@@ -2,119 +2,150 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
 }
 
-/* NAVBAR */
-.navbar {
-  background: black;
-  color: white;
-  padding: 12px 30px;
+body {
+  background: white;
+}
+
+.main {
+  width: 100%;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #4CAF50;
-  font-size: 22px;
-}
-
-.logo strong {
-  color: #2ecc71;
-}
-
-nav {
-  display: flex;
-  gap: 15px;
-}
-
-nav a {
-  color: white;
-  text-decoration: none;
-  font-size: 16px;
-}
-
-nav span {
-  color: white;
-}
-
-.search-login {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.search-login input {
-  padding: 8px 15px;
-  border-radius: 20px;
-  border: none;
-  outline: none;
-}
-
-.login-btn {
-  background: #3fae2a;
-  border: none;
-  padding: 8px 18px;
-  border-radius: 15px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-/* CONTEÚDO */
-.container {
-  text-align: center;
+  justify-content: center;
   margin-top: 60px;
 }
 
-.container h1 {
-  font-family: "Georgia", serif;
+
+.card {
+  width: 420px;
+  text-align: center;
+}
+
+.card h1 {
+  font-family: 'Cinzel', serif;
   font-size: 42px;
-  margin-bottom: 10px;
+  font-weight: normal;
 }
 
-.container hr {
-  width: 300px;
-  margin: 0 auto 30px;
-  border: 1px solid black;
+.divider {
+  width: 100%;
+  height: 2px;
+  background: black;
+  margin: 15px 0 35px 0;
 }
 
-/* FORMULÁRIO */
-.form-cadastro {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
-}
-
-.form-cadastro input {
-  width: 320px;
-  padding: 14px;
-  border-radius: 10px;
+.card input {
+  width: 100%;
+  height: 55px;
+  margin: 10px 0;
+  padding-left: 20px;
+  border-radius: 15px;
   border: none;
   background: #d9d9d9;
-  font-size: 16px;
+  font-size: 18px;
 }
 
-.form-cadastro p {
+.card input::placeholder {
+  color: #a0a0a0;
+}
+
+.card p {
+  margin-top: 10px;
   font-size: 14px;
 }
 
-.form-cadastro a {
-  color: #1e90ff;
+.card a {
+  color: #1877f2;
   text-decoration: none;
 }
 
-.form-cadastro button {
-  margin-top: 20px;
-  padding: 12px 40px;
-  background: #1e73ff;
-  border: none;
-  border-radius: 10px;
+.card button {
+  margin-top: 25px;
+  width: 220px;
+  height: 55px;
+  background: #1877f2;
   color: black;
-  font-size: 18px;
+  border: none;
+  border-radius: 15px;
+  font-size: 20px;
   cursor: pointer;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+  height: 80px;
+  background: #000;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Logo */
+.logo-img {
+  height: 52px;           /* ajuste fino aqui se quiser */
+  object-fit: contain;
+}
+
+/* Links */
+.navlinks {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.navlinks a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+.navlinks span {
+  color: #fff;
+}
+
+/* Lado direito */
+.navright {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+/* Busca */
+.searchwrap {
+  position: relative;
+}
+
+.searchwrap input {
+  width: 360px;
+  height: 42px;
+  padding: 0 48px 0 18px;
+  border-radius: 22px;
+  border: none;
+  outline: none;
+  background: #d9d9d9;
+  font-size: 18px;
+}
+
+.searchwrap input::placeholder {
+  color: #9a9a9a;
+}
+
+.search-icon {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.6;
+}
+
+/* Botão login */
+.login-btn {
+  background: #2f8f1f;
+  color: #000;
+  text-decoration: none;
+  padding: 8px 22px;
+  border-radius: 16px;
+  font-size: 22px;
+  font-family: Georgia, serif;
 }

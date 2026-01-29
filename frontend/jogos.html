@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>EcoPlay Critics - Jogos</title>
+
+  <link rel="stylesheet" href="css/jogos.css">
+</head>
+<body>
+
+  <!-- ===== HEADER / NAVBAR ===== -->
+  <header class="navbar">
+    <div class="brand">
+      <img src="img/logo.png" alt="EcoPlay Critics" class="logo-img">
+    </div>
+
+    <nav class="navlinks">
+      <a href="jogos.html">Jogos</a>
+      <span>|</span>
+      <a href="sobre.html">Sobre Nós</a>
+      <span>|</span>
+      <a href="ajuda.html">Ajuda</a>
+    </nav>
+
+    <div class="navright">
+      <div class="searchwrap">
+        <input type="text" placeholder="Procurar">
+        <span class="search-icon">🔍</span>
+      </div>
+
+      <!-- Perfil + dropdown sair -->
+      <div class="profile-area">
+        <div class="profile" onclick="toggleMenu()" title="Conta"></div>
+        <div class="dropdown" id="dropdown">
+          <button onclick="logout()">Sair</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== CONTEÚDO ===== -->
+  <main class="content">
+
+    <h2>Todos os Jogos</h2>
+    <div class="games-row">
+      <div class="game add">+</div>
+
+      <div class="game"><img src="img/beyond-blue.jpg" alt="Beyond Blue"></div>
+      <div class="game selected"><img src="img/plasticity.jpg" alt="Plasticity"></div>
+      <div class="game"><img src="img/terra-nil.jpg" alt="Terra Nil"></div>
+      <div class="game"><img src="img/alba.jpg" alt="Alba"></div>
+      <div class="game"><img src="img/endling.jpg" alt="Endling"></div>
+      <div class="game"><img src="img/seeds.jpg" alt="Seeds of Resilience"></div>
+
+      <div class="arrow">›</div>
+    </div>
+
+    <h2>Mais Recente</h2>
+    <div class="games-row">
+      <div class="game"><img src="img/endling.jpg" alt="Endling"></div>
+      <div class="game"><img src="img/terra-nil.jpg" alt="Terra Nil"></div>
+      <div class="game"><img src="img/alba.jpg" alt="Alba"></div>
+      <div class="game"><img src="img/plasticity.jpg" alt="Plasticity"></div>
+      <div class="game"><img src="img/beyond-blue.jpg" alt="Beyond Blue"></div>
+      <div class="game"><img src="img/seeds.jpg" alt="Seeds of Resilience"></div>
+      <div class="game"><img src="img/flower.jpg" alt="Flower"></div>
+
+      <div class="arrow">›</div>
+    </div>
+
+  </main>
+
+  <script src="js/jogos.js"></script>
+</body>
+</html>

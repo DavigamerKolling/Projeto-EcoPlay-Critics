@@ -3,48 +3,62 @@
 <head>
   <meta charset="UTF-8">
   <title>EcoPlay Critics - Cadastro</title>
-  <link rel="stylesheet" href="cadastro.css">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/cadastro.css">
+
+  <!-- Fonte do título -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
 </head>
 <body>
 
-  <!-- Navbar -->
+  <!-- ===== HEADER / NAVBAR ===== -->
   <header class="navbar">
-    <div class="logo">
-      <img src="logo.png" alt="EcoPlay">
-      <span>EcoPlay <strong>Critics</strong></span>
+    <div class="brand">
+      <img src="img/logo.png" alt="EcoPlay Critics" class="logo-img">
     </div>
 
-    <nav>
-      <a href="#">Jogos</a>
+    <nav class="navlinks">
+      <a href="jogos.html">Jogos</a>
       <span>|</span>
-      <a href="#">Sobre Nós</a>
+      <a href="sobre.html">Sobre Nós</a>
       <span>|</span>
-      <a href="#">Ajuda</a>
+      <a href="ajuda.html">Ajuda</a>
     </nav>
 
-    <div class="search-login">
-      <input type="text" placeholder="Procurar">
-      <button class="login-btn">Login</button>
+    <div class="navright">
+      <div class="searchwrap">
+        <input type="text" placeholder="Procurar">
+        <span class="search-icon">🔍</span>
+      </div>
+
+      <a href="login.html" class="login-btn">Login</a>
     </div>
   </header>
 
-  <!-- Cadastro -->
-  <main class="container">
-    <h1>Cadastro</h1>
-    <hr>
+  <!-- ===== CONTEÚDO ===== -->
+  <main class="main">
+    <div class="card">
 
-    <form class="form-cadastro">
-      <input type="text" placeholder="Nome" required>
-      <input type="email" placeholder="Email" required>
-      <input type="password" placeholder="Senha" required>
-      <input type="password" placeholder="Confirmar Senha" required>
+      <h1>Cadastro</h1>
+      <div class="divider"></div>
 
-      <p>Já tem uma conta? <a href="#">Faça o Login!</a></p>
+      <form class="form-cadastro">
+        <input type="text" placeholder="Nome" required>
+        <input type="email" placeholder="Email" required>
+        <input type="password" placeholder="Senha" required>
+        <input type="password" placeholder="Confirmar Senha" required>
 
-      <button type="submit">Crie sua Conta</button>
-    </form>
+        <p>Já tem uma conta? <a href="login.html">Faça o Login!</a></p>
+
+        <button type="submit">Crie sua Conta</button>
+      </form>
+
+    </div>
   </main>
-<script src="js/cadastro.js"></script>
+
+  <!-- JS -->
+  <script src="js/cadastro.js"></script>
 
 </body>
 </html>

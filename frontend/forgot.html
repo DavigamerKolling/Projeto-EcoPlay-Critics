@@ -3,29 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <title>EcoPlay Critics - Recuperar Senha</title>
-  <link rel="stylesheet" href="forgot.css">
+
+  <link rel="stylesheet" href="css/forgot.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<header class="navbar">
-  <div class="logo">EcoPlay <strong>Critics</strong></div>
-  <nav>
-    <a href="#">Jogos</a> | <a href="#">Sobre Nós</a> | <a href="#">Ajuda</a>
-  </nav>
-  <div class="search-login">
-    <input type="text" placeholder="Procurar">
-    <button class="login-btn">Login</button>
-  </div>
-</header>
+  <!-- ===== HEADER / NAVBAR ===== -->
+  <header class="navbar">
+    <div class="brand">
+      <img src="img/logo.png" alt="EcoPlay Critics" class="logo-img">
+    </div>
 
-<main class="container">
-  <h1>Esqueci Minha Senha</h1>
-  <hr>
+    <nav class="navlinks">
+      <a href="jogos.html">Jogos</a>
+      <span>|</span>
+      <a href="sobre.html">Sobre Nós</a>
+      <span>|</span>
+      <a href="ajuda.html">Ajuda</a>
+    </nav>
 
-  <input type="email" id="email" placeholder="Email">
-  <button onclick="recuperar()">Enviar</button>
-</main>
+    <div class="navright">
+      <div class="searchwrap">
+        <input type="text" placeholder="Procurar">
+        <span class="search-icon">🔍</span>
+      </div>
 
-<script src="js/forgot.js"></script>
+      <a href="login.html" class="login-btn">Login</a>
+    </div>
+  </header>
+
+  <!-- ===== CONTEÚDO ===== -->
+  <main class="main">
+    <div class="card">
+      <h1>Esqueci Minha Senha</h1>
+      <div class="divider"></div>
+
+      <div class="form-forgot">
+        <input type="email" id="email" placeholder="Email" required>
+        <button type="button" onclick="recuperar()">Enviar</button>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/forgot.js"></script>
 </body>
 </html>

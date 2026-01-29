@@ -18,3 +18,7 @@ CREATE TABLE games (
   created_by INT,
   FOREIGN KEY (created_by) REFERENCES users(id)
 );
+
+ALTER TABLE users
+ADD reset_token VARCHAR(255),
+ADD reset_expires DATETIME;
