@@ -24,7 +24,7 @@
 
     <div class="navright">
       <div class="searchwrap">
-        <input type="text" placeholder="Procurar">
+        <input type="text" id="searchInput" placeholder="Procurar">
         <span class="search-icon">🔍</span>
       </div>
 
@@ -38,38 +38,54 @@
     </div>
   </header>
 
+  <p id="noResults" style="display:none; text-align:center; margin-top:20px;">
+  Nenhum jogo encontrado.
+</p>
+
   <!-- ===== CONTEÚDO ===== -->
   <main class="content">
 
     <h2>Todos os Jogos</h2>
-    <div class="games-row">
-      <div class="game add">+</div>
 
-      <div class="game"><img src="img/beyond-blue.jpg" alt="Beyond Blue"></div>
-      <div class="game selected"><img src="img/plasticity.jpg" alt="Plasticity"></div>
-      <div class="game"><img src="img/terra-nil.jpg" alt="Terra Nil"></div>
-      <div class="game"><img src="img/alba.jpg" alt="Alba"></div>
-      <div class="game"><img src="img/endling.jpg" alt="Endling"></div>
-      <div class="game"><img src="img/seeds.jpg" alt="Seeds of Resilience"></div>
+<div class="games-wrap">
+  <div class="games-row" id="row-all">
+    <div class="game add">+</div>
 
-      <div class="arrow">›</div>
-    </div>
+    <div class="game" data-name="Beyond Blue"><img src="img/beyond-blue.jpg" alt="Beyond Blue"></div>
+    <div class="game" data-name="Plasticity"><img src="img/plasticity.jpg" alt="Plasticity"></div>
+    <div class="game" data-name="Terra Nil"><img src="img/terra-nil.jpg" alt="Terra Nil"></div>
+    <div class="game" data-name="Alba"><img src="img/alba.jpg" alt="Alba"></div>
+    <div class="game" data-name="Endling"><img src="img/endling.jpg" alt="Endling"></div>
+    <div class="game" data-name="Seeds of Resilience"><img src="img/seeds.jpg" alt="Seeds of Resilience"></div>
+    <div class="game" data-name="Eco"><img src="img/eco.jpg" alt="Eco"></div>
+    <div class="game" data-name="Fate of the World"><img src="img/fate-of-the-world.jpg" alt="Fate of the World"></div>
+    <div class="game" data-name="Lumino City"><img src="img/lumino-city.jpg" alt="Lumino City"></div>
+  </div>
+
+  <button class="arrow" type="button" data-target="row-all">›</button>
+</div>
 
     <h2>Mais Recente</h2>
-    <div class="games-row">
-      <div class="game"><img src="img/endling.jpg" alt="Endling"></div>
-      <div class="game"><img src="img/terra-nil.jpg" alt="Terra Nil"></div>
-      <div class="game"><img src="img/alba.jpg" alt="Alba"></div>
-      <div class="game"><img src="img/plasticity.jpg" alt="Plasticity"></div>
-      <div class="game"><img src="img/beyond-blue.jpg" alt="Beyond Blue"></div>
-      <div class="game"><img src="img/seeds.jpg" alt="Seeds of Resilience"></div>
-      <div class="game"><img src="img/flower.jpg" alt="Flower"></div>
 
-      <div class="arrow">›</div>
-    </div>
+<div class="games-wrap">
+  <div class="games-row" id="row-recent">
+    <div class="game" data-name="Endling"><img src="img/endling.jpg" alt="Endling"></div>
+    <div class="game" data-name="Terra Nil"><img src="img/terra-nil.jpg" alt="Terra Nil"></div>
+    <div class="game" data-name="Alba"><img src="img/alba.jpg" alt="Alba"></div>
+    <div class="game" data-name="Plasticity"><img src="img/plasticity.jpg" alt="Plasticity"></div>
+    <div class="game" data-name="Beyond Blue"><img src="img/beyond-blue.jpg" alt="Beyond Blue"></div>
+    <div class="game" data-name="Seeds of Resilience"><img src="img/seeds.jpg" alt="Seeds of Resilience"></div>
+    <div class="game" data-name="Flower"><img src="img/flower.jpg" alt="Flower"></div>
+    <div class="game" data-name="Eco"><img src="img/eco.jpg" alt="Eco"></div>
+    <div class="game" data-name="Fate of the World"><img src="img/fate-of-the-world.jpg" alt="Fate of the World"></div>
+    <div class="game" data-name="Lumino City"><img src="img/lumino-city.jpg" alt="Lumino City"></div>
+  </div>
+
+  <button class="arrow" type="button" data-target="row-recent">›</button>
+</div>
 
   </main>
 
-  <script src="js/jogos.js"></script>
+    <script src="js/jogos.js"></script>
 </body>
 </html>

@@ -51,15 +51,35 @@ body{background:#fff;}
   margin:18px 0 14px;
 }
 
-/* Linha de jogos */
+.games-wrap{
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  width: 100%;
+}
+
 .games-row{
-  display:flex;
-  align-items:center;
-  gap:22px;
-  margin-bottom:34px;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+
+  scroll-behavior: smooth;
+
+  width: calc(100% - 80px); /* <-- FORÇA sobrar espaço pra seta e cortar a lista */
+  padding-bottom: 6px;
+}
+
+/* esconder scrollbar */
+.games-row::-webkit-scrollbar{
+  height: 0;
 }
 
 .game{
+  flex: 0 0 auto;
   width:140px;
   height:190px;
   border-radius:4px;
@@ -88,12 +108,17 @@ body{background:#fff;}
 }
 
 .arrow{
-  width:44px;height:44px;
-  border:2px solid #000;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:28px;
-  cursor:pointer;
+  width: 44px;
+  height: 44px;
+  border: 2px solid #000;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  cursor: pointer;
+  background: #fff;
 }
+
+.arrow.left { margin-right: 2px; }
+.arrow.right { margin-left: 2px; }

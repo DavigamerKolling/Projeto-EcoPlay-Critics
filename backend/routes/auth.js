@@ -9,17 +9,28 @@ const crypto = require("crypto");
 router.post("/register", async (req, res) => {
   const { name, email, password } = req.body;
 
-  const hash = await bcrypt.hash(password, 10);
+  // 1) Checa se já existe
+  db.query("SELECT id FROM users WHERE email = ?", [email], async (err, results) => {
+    if (err) return res.status(500).json({ error: "Erro no servidor." });
 
-  db.query(
-    "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
-    [name, email, hash],
-    (err) => {
-      if (err) return res.status(400).json({ error: "Email já cadastrado ou erro no banco." });
-      return res.json({ message: "Usuário criado!" });
+    if (results.length > 0) {
+      return res.status(409).json({ error: "Esse email já está cadastrado." }); // 409 = conflito
     }
-  );
+
+    // 2) Criptografa e insere
+    const hash = await bcrypt.hash(password, 10);
+
+    db.query(
+      "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
+      [name, email, hash],
+      (err2) => {
+        if (err2) return res.status(500).json({ error: "Erro ao cadastrar usuário." });
+        return res.json({ message: "Usuário criado!" });
+      }
+    );
+  });
 });
+
 
 // LOGIN
 router.post("/login", (req, res) => {

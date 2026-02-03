@@ -20,19 +20,15 @@ form.addEventListener("submit", async (e) => {
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({
-      name,
-      email,
-      password
-    })
+    body: JSON.stringify({ name, email, password })
   });
 
   const data = await response.json();
 
-  if (data.message) {
+  if (response.ok) {
     alert("Conta criada com sucesso!");
     window.location.href = "login.html";
   } else {
-    alert("Erro ao cadastrar usuário");
+    alert(data.error || "Erro ao cadastrar usuário");
   }
 });
