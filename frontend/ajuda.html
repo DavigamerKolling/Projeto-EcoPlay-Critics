@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>EcoPlay Critics - Ajuda</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="css/ajuda.css">
+  <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ===== NAVBAR (igual às outras páginas) ===== -->
+<header class="navbar">
+  <div class="brand">
+    <img src="img/logo.png" class="logo-img" alt="EcoPlay Critics">
+  </div>
+
+  <nav class="navlinks">
+    <a href="jogos.html">Jogos</a><span>|</span>
+    <a href="sobre.html">Sobre Nós</a><span>|</span>
+    <a href="ajuda.html" class="active">Ajuda</a>
+  </nav>
+
+  <div class="navright">
+    <div class="searchwrap">
+      <input type="text" placeholder="Procurar">
+      <span class="search-icon">🔍</span>
+    </div>
+    <div class="profile"></div>
+  </div>
+</header>
+
+<!-- ===== CONTEÚDO ===== -->
+<main class="help">
+
+  <!-- FORMULÁRIO -->
+  <div class="help-box" id="formBox">
+    <select id="tipoProblema">
+      <option value="">Selecione o tipo de Problema</option>
+      <option>Erro no site</option>
+      <option>Problema com conta</option>
+      <option>Jogo incorreto</option>
+      <option>Outro</option>
+    </select>
+
+    <textarea id="descricao" placeholder="Descreva o Problema"></textarea>
+
+    <button onclick="enviarRelatorio()">Enviar</button>
+  </div>
+
+  <!-- CONFIRMAÇÃO -->
+  <div class="help-box success" id="successBox">
+    <h1>Relatório Enviado!</h1>
+
+    <p>
+      O relatório do seu problema foi enviado,<br>
+      aguarde até mandarmos uma mensagem<br>
+      no seu email. Pode demorar horas ou dias,<br>
+      então seja paciente!
+    </p>
+
+    <a href="jogos.html" class="btn-back">Voltar para os Jogos</a>
+  </div>
+
+</main>
+
+<script src="js/ajuda.js"></script>
+</body>
+</html>

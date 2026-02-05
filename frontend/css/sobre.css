@@ -1,0 +1,138 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #fff; font-family: "IM Fell English SC", serif; }
+
+/* ===== NAVBAR ===== */
+.navbar{
+  height: 80px;
+  background: #000;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo-img{ height: 52px; object-fit: contain; }
+
+.navlinks{
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.navlinks a{
+  color: #fff;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+.navlinks span{ color: #fff; opacity: .9; }
+
+.navlinks a.active{
+  text-decoration: none;
+}
+
+.navright{
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.searchwrap{ position: relative; }
+
+.searchwrap input{
+  width: 360px;
+  height: 42px;
+  padding: 0 48px 0 18px;
+  border-radius: 22px;
+  border: none;
+  outline: none;
+  background: #d9d9d9;
+  font-size: 18px;
+  font-family: Arial, sans-serif;
+}
+
+.searchwrap input::placeholder{ color: #9a9a9a; }
+
+.search-icon{
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: .6;
+  user-select: none;
+}
+
+/* Perfil (bolinha verde) */
+.profile{
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #2ecc71;
+}
+
+/* ===== CONTEÚDO ===== */
+.about{
+  padding: 26px 30px;
+}
+
+.about-box{
+  max-width: 980px;
+  margin: 0 auto;        /* <-- centraliza o bloco na página */
+  text-align: center;    /* <-- centraliza o texto */
+}
+
+.about-box p{
+  font-size: 18px;
+  line-height: 1.45;
+  margin: 12px 0;
+  color: #111;
+}
+
+/* “No EcoPlay...” */
+.lead{
+  margin-top: 18px;
+}
+
+/* lista com hífen visual */
+.bullets{
+  list-style: none;
+  margin: 12px auto 18px auto;
+  padding: 0;
+  display: inline-block;   /* mantém o bloco centralizado */
+  text-align: left;        /* texto da lista fica legível */
+}
+
+.bullets li{
+  font-size: 18px;
+  line-height: 1.45;
+  margin: 6px 0;
+}
+
+
+.bullets li::before{
+  content: "- ";
+}
+
+/* mensagem final centralizada */
+.welcome{
+  text-align: center;
+  margin-top: 18px;
+  font-size: 20px;
+}
+
+/* botão verde */
+.btn-wrap{
+  display: flex;
+  justify-content: center;
+  margin-top: 18px;
+}
+
+.btn-back{
+  background: #2f8f1f;
+  color: #000;
+  text-decoration: none;
+  padding: 12px 28px;
+  border-radius: 14px;
+  font-size: 20px;
+  font-family: Georgia, serif;
+}

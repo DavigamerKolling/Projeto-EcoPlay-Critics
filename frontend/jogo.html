@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoPlay Critics - Jogo</title>
+
+  <link rel="stylesheet" href="css/jogo.css">
+  <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- NAVBAR (igual as outras) -->
+  <header class="navbar">
+    <div class="brand">
+      <img src="img/logo.png" alt="EcoPlay Critics" class="logo-img">
+    </div>
+
+    <nav class="navlinks">
+      <a href="jogos.html">Jogos</a><span>|</span>
+      <a href="sobre.html">Sobre Nós</a><span>|</span>
+      <a href="ajuda.html">Ajuda</a>
+    </nav>
+
+    <div class="navright">
+      <div class="searchwrap">
+        <input type="text" placeholder="Procurar">
+        <span class="search-icon">🔍</span>
+      </div>
+      <div class="profile"></div>
+    </div>
+  </header>
+
+  <main class="page">
+
+    <!-- TOPO: banner + capa + plataformas -->
+    <section class="top">
+      <div class="banner-wrap">
+        <button class="nav-btn left" id="prevBanner">‹</button>
+        <div id="mediaFrame" class="banner"></div>
+        <button class="nav-btn right" id="nextBanner">›</button>
+      </div>
+
+      <div class="side">
+        <img id="coverImg" class="cover" src="" alt="Capa do jogo">
+
+        <div class="platforms" id="platforms"></div>
+      </div>
+    </section>
+
+    <!-- TEXTO -->
+    <section class="info">
+      <h2>Sobre o Jogo</h2>
+      <div class="line"></div>
+
+      <div class="text" id="gameText"></div>
+    </section>
+
+  </main>
+
+  <script src="js/jogo.js"></script>
+</body>
+</html>
