@@ -5,26 +5,31 @@ require("dotenv").config();
 
 const app = express();
 
-// Middlewares
+// ===== MIDDLEWARES =====
 app.use(cors());
 app.use(express.json());
 
+// ===== ROTAS DA API =====
 app.use("/auth", require("./routes/auth"));
+app.use("/api/games", require("./routes/games"));
 
-
-// Servir arquivos do frontend
+// ===== ARQUIVOS ESTÁTICOS =====
+// Frontend (HTML, CSS, JS, imagens)
 app.use(express.static(path.join(__dirname, "../frontend")));
 
-// Rotas da API
-const authRoutes = require("./routes/auth");
-app.use("/auth", authRoutes);
+// Uploads de jogos (capas, imagens, vídeos)
+app.use(
+  "/uploads",
+  express.static(path.join(__dirname, "../frontend/uploads"))
+);
 
-// Rota principal -> login.html
+// ===== ROTA PRINCIPAL =====
+// Abre a tela de login
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/login.html"));
 });
 
-// Porta
+// ===== PORTA =====
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);

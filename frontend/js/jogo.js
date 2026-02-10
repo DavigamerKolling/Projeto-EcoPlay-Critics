@@ -1,3 +1,5 @@
+(async () => {
+
 // Ícones (coloque esses arquivos em frontend/img/platforms/)
 const PLATFORM_ICONS = {
   steam: "img/platforms/steam.png",
@@ -44,7 +46,7 @@ const GAMES = {
       { type: "video", youtube: "kN1PcV7vwyU" },
       { type: "video", youtube: "2HZ5-2jok5Y" }
     ],
-
+    
     platforms: ["steam", "epic", "linux", "playstation", "xbox", "switch"],
 
     textHtml: `
@@ -395,6 +397,28 @@ const GAMES = {
   }
 };
 
+async function loadFromApi(slug) {
+  const res = await fetch(
+    `http://localhost:3000/api/games/slug/${encodeURIComponent(slug)}`
+  );
+
+  if (!res.ok) throw new Error("notfound");
+
+  const data = await res.json();
+
+  const media = [];
+  if (data.media && data.media.length) media.push(...data.media);
+  if (data.youtubeId) media.push({ type: "video", youtube: data.youtubeId });
+
+  return {
+    title: data.title,
+    cover: data.cover,
+    media,
+    platforms: data.platforms,
+    textHtml: `<p>${(data.description || "").replace(/\n/g, "<br>")}</p>`
+  };
+}
+
 // ---------- helpers ----------
 function getQueryParam(name) {
   const url = new URL(window.location.href);
@@ -403,112 +427,120 @@ function getQueryParam(name) {
 
 // ---------- main ----------
 const id = getQueryParam("id");
-const game = GAMES[id];
+
+let game = GAMES[id];
 
 if (!game) {
-  document.title = "EcoPlay Critics - Jogo não encontrado";
-  const text = document.getElementById("gameText");
-  if (text) text.innerHTML = "<p>Jogo não encontrado.</p>";
-} else {
-  document.title = `EcoPlay Critics - ${game.title}`;
-
-  // Capa
-  const coverImg = document.getElementById("coverImg");
-  if (coverImg) coverImg.src = game.cover;
-
-  // Plataformas
-  const platformsWrap = document.getElementById("platforms");
-  if (platformsWrap) {
-    platformsWrap.innerHTML = "";
-    (game.platforms || []).forEach((p) => {
-      const div = document.createElement("div");
-      div.className = "platform";
-      const icon = PLATFORM_ICONS[p];
-
-      // se não achar ícone, mostra texto
-      div.innerHTML = icon
-        ? `<img src="${icon}" alt="${p}">`
-        : `<span style="font-family: Arial, sans-serif; font-size: 12px;">${p}</span>`;
-
-      platformsWrap.appendChild(div);
-    });
-  }
-
-  // Texto
-  const gameText = document.getElementById("gameText");
-  if (gameText) gameText.innerHTML = game.textHtml || "<p>Sem descrição.</p>";
-
-  // ---------- GALERIA (imagem + vídeo) ----------
-  const mediaFrame = document.getElementById("mediaFrame");
-  const prevBtn = document.getElementById("prevBanner");
-  const nextBtn = document.getElementById("nextBanner");
-
-  // compatibilidade: se ainda existir game.banners antigo, converte para imagens
-  const mediaList =
-    game.media ??
-    (game.banners ? game.banners.map((src) => ({ type: "image", src })) : []);
-
-  let mediaIndex = 0;
-
-  function renderMedia(item) {
-    if (!mediaFrame) return;
-    mediaFrame.innerHTML = "";
-
-    if (!item) {
-      mediaFrame.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-family:Arial,sans-serif;">Sem mídia</div>`;
-      return;
-    }
-
-    // IMAGEM
-    if (item.type === "image") {
-      const img = document.createElement("img");
-      img.src = item.src;
-      img.alt = "Mídia do jogo";
-      mediaFrame.appendChild(img);
-      return;
-    }
-
-    // VÍDEO YOUTUBE (ID)
-    if (item.type === "video" && item.youtube) {
-      const iframe = document.createElement("iframe");
-      iframe.src = `https://www.youtube.com/embed/${item.youtube}`;
-      iframe.allow =
-        "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
-      iframe.allowFullscreen = true;
-      mediaFrame.appendChild(iframe);
-      return;
-    }
-
-    // VÍDEO LOCAL (mp4/webm)
-    if (item.type === "video" && item.src) {
-      const video = document.createElement("video");
-      video.src = item.src;
-      video.controls = true;
-      video.playsInline = true;
-      mediaFrame.appendChild(video);
-      return;
-    }
-
-    // fallback
-    mediaFrame.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-family:Arial,sans-serif;">Mídia inválida</div>`;
-  }
-
-  // render inicial
-  renderMedia(mediaList[0]);
-
-  if (prevBtn) {
-    prevBtn.addEventListener("click", () => {
-      if (mediaList.length === 0) return;
-      mediaIndex = (mediaIndex - 1 + mediaList.length) % mediaList.length;
-      renderMedia(mediaList[mediaIndex]);
-    });
-  }
-
-  if (nextBtn) {
-    nextBtn.addEventListener("click", () => {
-      if (mediaList.length === 0) return;
-      mediaIndex = (mediaIndex + 1) % mediaList.length;
-      renderMedia(mediaList[mediaIndex]);
-    });
+  try {
+    game = await loadFromApi(id); // ← NOVA LINHA
+  } catch (err) {
+    document.title = "EcoPlay Critics - Jogo não encontrado";
+    const text = document.getElementById("gameText");
+    if (text) text.innerHTML = "<p>Jogo não encontrado.</p>";
+    return; // 🔴 IMPORTANTE: para aqui
   }
 }
+
+// ✅ a partir daqui, game SEMPRE existe
+document.title = `EcoPlay Critics - ${game.title}`;
+
+// Capa
+const coverImg = document.getElementById("coverImg");
+if (coverImg) coverImg.src = game.cover;
+
+// Plataformas
+const platformsWrap = document.getElementById("platforms");
+if (platformsWrap) {
+  platformsWrap.innerHTML = "";
+  (game.platforms || []).forEach((p) => {
+    const div = document.createElement("div");
+    div.className = "platform";
+    const icon = PLATFORM_ICONS[p];
+
+    // se não achar ícone, mostra texto
+    div.innerHTML = icon
+      ? `<img src="${icon}" alt="${p}">`
+      : `<span style="font-family: Arial, sans-serif; font-size: 12px;">${p}</span>`;
+
+    platformsWrap.appendChild(div);
+  });
+}
+
+// Texto
+const gameText = document.getElementById("gameText");
+if (gameText) gameText.innerHTML = game.textHtml || "<p>Sem descrição.</p>";
+
+// ---------- GALERIA (imagem + vídeo) ----------
+const mediaFrame = document.getElementById("mediaFrame");
+const prevBtn = document.getElementById("prevBanner");
+const nextBtn = document.getElementById("nextBanner");
+
+// compatibilidade: se ainda existir game.banners antigo, converte para imagens
+const mediaList =
+  game.media ??
+  (game.banners ? game.banners.map((src) => ({ type: "image", src })) : []);
+
+let mediaIndex = 0;
+
+function renderMedia(item) {
+  if (!mediaFrame) return;
+  mediaFrame.innerHTML = "";
+
+  if (!item) {
+    mediaFrame.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-family:Arial,sans-serif;">Sem mídia</div>`;
+    return;
+  }
+
+  // IMAGEM
+  if (item.type === "image") {
+    const img = document.createElement("img");
+    img.src = item.src;
+    img.alt = "Mídia do jogo";
+    mediaFrame.appendChild(img);
+    return;
+  }
+
+  // VÍDEO YOUTUBE (ID)
+  if (item.type === "video" && item.youtube) {
+    const iframe = document.createElement("iframe");
+    iframe.src = `https://www.youtube.com/embed/${item.youtube}`;
+    iframe.allow =
+      "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+    iframe.allowFullscreen = true;
+    mediaFrame.appendChild(iframe);
+    return;
+  }
+
+  // VÍDEO LOCAL (mp4/webm)
+  if (item.type === "video" && item.src) {
+    const video = document.createElement("video");
+    video.src = item.src;
+    video.controls = true;
+    video.playsInline = true;
+    mediaFrame.appendChild(video);
+    return;
+  }
+
+  // fallback
+  mediaFrame.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-family:Arial,sans-serif;">Mídia inválida</div>`;
+}
+
+// render inicial
+renderMedia(mediaList[0]);
+
+if (prevBtn) {
+  prevBtn.addEventListener("click", () => {
+    if (mediaList.length === 0) return;
+    mediaIndex = (mediaIndex - 1 + mediaList.length) % mediaList.length;
+    renderMedia(mediaList[mediaIndex]);
+  });
+}
+
+if (nextBtn) {
+  nextBtn.addEventListener("click", () => {
+    if (mediaList.length === 0) return;
+    mediaIndex = (mediaIndex + 1) % mediaList.length;
+    renderMedia(mediaList[mediaIndex]);
+  });
+}
+})();

@@ -44,3 +44,53 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+async function loadUserGames() {
+  const res = await fetch("/api/games/list");
+  if (!res.ok) return;
+
+  const games = await res.json();
+
+  // Onde vai inserir: row-all e row-recent
+  const rowAll = document.getElementById("row-all");
+  const rowRecent = document.getElementById("row-recent");
+
+  if (!rowAll) return;
+
+  // Cria cards e adiciona DEPOIS do "+"
+  // (o + é o primeiro filho)
+  const addCard = rowAll.querySelector(".game.add");
+
+  games.forEach((g) => {
+    // evita duplicar: se já existe algum card com esse slug/título
+    if (rowAll.querySelector(`[data-slug="${g.slug}"]`)) return;
+
+    const a = document.createElement("a");
+    a.className = "game usergame";
+    a.href = `jogo.html?id=${encodeURIComponent(g.slug)}`;
+    a.dataset.name = g.title;
+    a.dataset.slug = g.slug;
+
+    const img = document.createElement("img");
+    img.src = g.cover_url || "img/placeholder.jpg";
+    img.alt = g.title;
+
+    a.appendChild(img);
+
+    // coloca depois do "+"
+    if (addCard && addCard.nextSibling) {
+      rowAll.insertBefore(a, addCard.nextSibling);
+    } else {
+      rowAll.appendChild(a);
+    }
+
+    // Também adiciona no "Mais Recente" (ex: top 10)
+    if (rowRecent && rowRecent.querySelectorAll(".game.usergame").length < 10) {
+      const b = a.cloneNode(true);
+      rowRecent.appendChild(b);
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadUserGames();
+});
