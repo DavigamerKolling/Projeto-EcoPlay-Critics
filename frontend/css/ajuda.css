@@ -10,7 +10,11 @@ body{background:#fff;font-family:"IM Fell English SC",serif;}
   align-items:center;
   justify-content:space-between;
 }
-.logo-img{height:52px;}
+.logo-img {
+  height: 100px;
+  margin-left: -40px;
+  object-fit: contain;
+}
 .navlinks{display:flex;align-items:center;gap:16px;}
 .navlinks a, .navlinks span{color:#fff;text-decoration:none;font-size:18px;}
 .navright{display:flex;align-items:center;gap:18px;}

@@ -1,12 +1,24 @@
+@font-face {
+  font-family: 'IM Fell English SC';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/imfellenglishsc/v16/a8IENpD3CDX-4zrWfr1VY879qFF05pZ7PIIP.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:#fff;font-family:"IM Fell English SC",serif;}
 
-/* NAVBAR */
 .navbar{
   height:80px;background:#000;padding:0 32px;
   display:flex;align-items:center;justify-content:space-between;
 }
-.logo-img{height:52px;}
+.logo-img {
+  height: 100px;
+  margin-left: -40px;
+  object-fit: contain;
+}
 .navlinks{display:flex;align-items:center;gap:16px;}
 .navlinks a,.navlinks span{color:#fff;text-decoration:none;font-size:18px;}
 .navright{display:flex;align-items:center;gap:18px;}
@@ -18,7 +30,6 @@ body{background:#fff;font-family:"IM Fell English SC",serif;}
 .search-icon{position:absolute;right:14px;top:50%;transform:translateY(-50%);opacity:.7;}
 .profile{width:52px;height:52px;border-radius:50%;background:#2ecc71;}
 
-/* PAGE */
 .page{padding:22px 30px;}
 
 .top{
@@ -28,7 +39,6 @@ body{background:#fff;font-family:"IM Fell English SC",serif;}
   align-items:start;
 }
 
-/* banner */
 .banner-wrap{
   position:relative;
   background:#e8e8e8;
@@ -69,7 +79,6 @@ body{background:#fff;font-family:"IM Fell English SC",serif;}
 .nav-btn.left{left:12px;}
 .nav-btn.right{right:12px;}
 
-/* lateral */
 .side{display:flex;gap:14px;align-items:flex-start;}
 .cover{
   width:220px;height:240px;
@@ -93,7 +102,6 @@ body{background:#fff;font-family:"IM Fell English SC",serif;}
   object-fit:contain;
 }
 
-/* texto */
 .info{margin-top:18px;}
 .info h2{font-size:22px;font-weight:400;}
 .line{height:2px;background:#000;margin:10px 0 14px;}
@@ -106,3 +114,19 @@ body{background:#fff;font-family:"IM Fell English SC",serif;}
 .text p{margin:10px 0;}
 .text ul{margin:10px 0 10px 24px;}
 .text li{margin:6px 0;}
+
+.danger {
+  background-color: #cc1414;
+  color: #000;
+  border: none;
+  padding: 12px 28px;
+  font-size: 18px;
+  font-family: inherit;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.danger:hover {
+  transform: scale(1.05);
+}
