@@ -200,15 +200,18 @@ router.get("/slug/:slug", (req, res) => {
         if ((!platforms || platforms.length === 0) && game.platform) platforms = [game.platform];
 
         return res.json({
-          title: game.title,
-          slug: game.slug,
-          description: game.description,
-          cover: game.cover_url,
-          youtubeId: game.youtube_id,
-          waste_type: game.waste_type,
-          platforms,
-          media
-        });
+         id: game.id,
+         created_by: game.created_by,
+         title: game.title,
+         slug: game.slug,
+         description: game.description,
+         cover: game.cover_url,
+         youtubeId: game.youtube_id,
+         waste_type: game.waste_type,
+         platforms,
+         media
+});
+
       }
     );
   });

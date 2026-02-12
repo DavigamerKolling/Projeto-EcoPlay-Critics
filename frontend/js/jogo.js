@@ -411,12 +411,14 @@ async function loadFromApi(slug) {
   if (data.youtubeId) media.push({ type: "video", youtube: data.youtubeId });
 
   return {
-    title: data.title,
-    cover: data.cover,
-    media,
-    platforms: data.platforms,
-    textHtml: `<p>${(data.description || "").replace(/\n/g, "<br>")}</p>`
-  };
+  id: data.id,
+  created_by: data.created_by,
+  title: data.title,
+  cover: data.cover,
+  media,
+  platforms: data.platforms,
+  textHtml: `<p>${(data.description || "").replace(/\n/g, "<br>")}</p>`
+};
 }
 
 // ---------- helpers ----------
@@ -527,6 +529,39 @@ function renderMedia(item) {
 
 // render inicial
 renderMedia(mediaList[0]);
+
+// ===== NOVO: botão de deletar (apenas dono) =====
+const deleteBtn = document.getElementById("deleteGameBtn");
+const token = localStorage.getItem("token"); // ajuste se você usa outro nome
+
+// Só faz sentido para jogos vindos do backend (tem id e created_by)
+if (deleteBtn && game?.id && game?.created_by && token) {
+  // seu auth middleware usa req.userId; então precisamos comparar com o usuário logado
+  // Se você não tem o userId salvo no localStorage, dá pra liberar o botão e o backend bloqueia se não for dono.
+  deleteBtn.style.display = "inline-block";
+
+  deleteBtn.addEventListener("click", async () => {
+    const ok = confirm("Tem certeza que deseja apagar este jogo? Isso não pode ser desfeito.");
+    if (!ok) return;
+
+    const res = await fetch(`/api/games/${game.id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    const data = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+      alert(data.message || "Erro ao apagar jogo.");
+      return;
+    }
+
+    alert("Jogo apagado!");
+    window.location.href = "jogos.html";
+  });
+}
 
 if (prevBtn) {
   prevBtn.addEventListener("click", () => {
