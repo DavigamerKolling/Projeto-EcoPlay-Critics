@@ -33,7 +33,14 @@
       </div>
 
       <!-- Perfil (igual ao mockup) -->
-      <div class="profile"></div>
+      <div class="profile-area">
+        <div class="profile" onclick="toggleMenu()" title="Conta">
+        <img src="img/profile.png" alt="Perfil">
+        </div>
+        <div class="dropdown" id="dropdown">
+          <button onclick="logout()">Sair</button>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -81,6 +88,7 @@
       </div>
     </div>
   </main>
-
+<script src="js/sobre.js"></script>
+<script src="js/logout.js"></script>
 </body>
 </html>
