@@ -156,3 +156,12 @@ body{background:#fff;font-family:"IM Fell English SC", serif;}
   margin-top:10px;
   font-family:"IM Fell English SC",serif;
 }
+
+input[type="text"] {
+  width: 420px;
+  padding: 12px;
+  margin: 6px 0;
+  border-radius: 10px;
+  border: none;
+  background: #e6e6e6;
+}

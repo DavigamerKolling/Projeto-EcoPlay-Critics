@@ -35,6 +35,7 @@ const upload = multer({
 
 /* ====== ROTAS ANTIGAS (MANTIDAS) ====== */
 router.post("/", auth, (req, res) => {
+  // ✅ corrigido: platform estava sendo usado sem existir
   const { title, platform, waste_type, description } = req.body;
 
   db.query(
@@ -66,22 +67,29 @@ router.put(
       platforms = [];
     }
 
-    // monta atualização
-    const fields = [
-      title,
-      description,
-      youtubeId || null,
-      JSON.stringify(platforms),
-      waste_type || null,
-      slug
-    ];
+    // ✅ (mínimo necessário) aceitar links também, sem quebrar quando não vier
+    let links = {};
+    try {
+      links = JSON.parse(req.body.links || "{}");
+    } catch {
+      links = {};
+    }
+    const linksJson = Object.keys(links).length ? JSON.stringify(links) : null;
 
     db.query(
       `UPDATE games
-       SET title = ?, description = ?, youtube_id = ?, platforms_json = ?, waste_type = ?
+       SET title = ?, description = ?, youtube_id = ?, platforms_json = ?, links_json = COALESCE(?, links_json), waste_type = ?
        WHERE slug = ?`,
-      fields,
-      (err, result) => {
+      [
+        title,
+        description,
+        youtubeId || null,
+        JSON.stringify(platforms),
+        linksJson,
+        waste_type || null,
+        slug
+      ],
+      (err) => {
         if (err) {
           console.error(err);
           return res.status(500).json({ message: "Erro ao atualizar jogo." });
@@ -95,16 +103,6 @@ router.put(
 
 /* ====== NOVO: CRIAR JOGO COMPLETO (capa + mídias + slug) ======
    Endpoint: POST /api/games/create
-   Body: multipart/form-data
-   Campos:
-     - title (texto)
-     - description (texto)
-     - waste_type (texto opcional)
-     - youtubeId (texto opcional)   -> só o ID do YouTube
-     - platforms (texto JSON)       -> ex: ["steam","android",...]
-   Arquivos:
-     - cover (1 imagem)
-     - media (0..N imagens/videos)
 */
 router.post(
   "/create",
@@ -121,6 +119,15 @@ router.post(
         platforms = [];
       }
 
+      // ✅ CORREÇÃO PRINCIPAL: definir "links" (antes estava undefined e derrubava o servidor)
+      let links = {};
+      try {
+        links = JSON.parse(req.body.links || "{}");
+      } catch {
+        links = {};
+      }
+      const linksJson = Object.keys(links).length ? JSON.stringify(links) : null;
+
       if (!title || !description) {
         return res.status(400).json({ message: "Informe title e description." });
       }
@@ -131,11 +138,9 @@ router.post(
       const baseSlug = slugify(title);
       if (!baseSlug) return res.status(400).json({ message: "Título inválido para gerar slug." });
 
-      // caminhos relativos para servir via /uploads/...
       const coverFile = req.files.cover[0];
       const coverUrl = `uploads/${coverFile.filename}`;
 
-      // garante slug único (callback style)
       const findUniqueSlug = (trySlug, n, cb) => {
         db.query("SELECT id FROM games WHERE slug = ?", [trySlug], (err, rows) => {
           if (err) return cb(err);
@@ -148,11 +153,9 @@ router.post(
       findUniqueSlug(baseSlug, 0, (err, finalSlug) => {
         if (err) return res.status(500).json({ message: "Erro ao gerar slug." });
 
-        // ⚠️ requer colunas novas na tabela games:
-        // slug, cover_url, youtube_id, platforms_json
         db.query(
-          `INSERT INTO games (title, slug, description, cover_url, youtube_id, platforms_json, waste_type, created_by)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+          `INSERT INTO games (title, slug, description, cover_url, youtube_id, platforms_json, links_json, waste_type, created_by)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           [
             title,
             finalSlug,
@@ -160,6 +163,7 @@ router.post(
             coverUrl,
             youtubeId || null,
             JSON.stringify(platforms),
+            linksJson,
             waste_type || null,
             req.userId
           ],
@@ -172,12 +176,10 @@ router.post(
             const gameId = result.insertId;
             const mediaFiles = req.files.media || [];
 
-            // Se você NÃO criou a tabela game_media ainda, você pode comentar esse bloco.
             if (mediaFiles.length === 0) {
               return res.status(201).json({ message: "Jogo criado!", slug: finalSlug });
             }
 
-            // insere mídias em game_media
             const inserts = mediaFiles.map((f, idx) => {
               const isVideo = (f.mimetype || "").startsWith("video/");
               const url = `uploads/${f.filename}`;
@@ -190,7 +192,6 @@ router.post(
               (err3) => {
                 if (err3) {
                   console.error(err3);
-                  // Mesmo se falhar as mídias, o jogo foi criado — devolve o slug pra não travar o fluxo
                   return res.status(201).json({
                     message: "Jogo criado (mídias não foram salvas).",
                     slug: finalSlug
@@ -210,9 +211,7 @@ router.post(
   }
 );
 
-/* ====== NOVO: BUSCAR JOGO POR SLUG (para jogo.html?id=slug) ======
-   Endpoint: GET /api/games/slug/:slug
-*/
+/* ====== NOVO: BUSCAR JOGO POR SLUG ====== */
 router.get("/slug/:slug", (req, res) => {
   const slug = req.params.slug;
 
@@ -222,18 +221,15 @@ router.get("/slug/:slug", (req, res) => {
 
     const game = rows[0];
 
-    // tenta buscar mídias (se a tabela existir)
     db.query(
       "SELECT media_type, url, sort_order FROM game_media WHERE game_id = ? ORDER BY sort_order ASC",
       [game.id],
       (err2, mediaRows) => {
-        // se der erro (ex: tabela não existe), ainda devolve o jogo sem mídia
         const media = err2 || !mediaRows ? [] : mediaRows.map(m => ({
           type: m.media_type === "image" ? "image" : "video_file",
           src: m.url
         }));
 
-        // plataformas: tenta JSON, se não tiver cai na coluna antiga "platform"
         let platforms = [];
         try {
           platforms = game.platforms_json ? JSON.parse(game.platforms_json) : [];
@@ -242,25 +238,30 @@ router.get("/slug/:slug", (req, res) => {
         }
         if ((!platforms || platforms.length === 0) && game.platform) platforms = [game.platform];
 
-        return res.json({
-         id: game.id,
-         created_by: game.created_by,
-         title: game.title,
-         slug: game.slug,
-         description: game.description,
-         cover: game.cover_url,
-         youtubeId: game.youtube_id,
-         waste_type: game.waste_type,
-         platforms,
-         media
-});
+        let links = {};
+        try {
+          links = game.links_json ? JSON.parse(game.links_json) : {};
+        } catch {
+          links = {};
+        }
 
+        return res.json({
+          id: game.id,
+          created_by: game.created_by,
+          title: game.title,
+          slug: game.slug,
+          description: game.description,
+          cover: game.cover_url,
+          youtubeId: game.youtube_id,
+          waste_type: game.waste_type,
+          platforms,
+          media,
+          links
+        });
       }
     );
   });
 });
-
-module.exports = router;
 
 // Lista resumida para a página jogos.html
 router.get("/list", (req, res) => {
@@ -276,12 +277,10 @@ router.get("/list", (req, res) => {
 });
 
 // ===== NOVO: DELETAR JOGO (somente quem criou) =====
-// DELETE /api/games/:id
 router.delete("/:id", auth, (req, res) => {
   const gameId = Number(req.params.id);
   if (!gameId) return res.status(400).json({ message: "ID inválido." });
 
-  // 1) verifica se o jogo existe e se foi criado pelo usuário logado
   db.query(
     "SELECT id, created_by, cover_url FROM games WHERE id = ?",
     [gameId],
@@ -294,27 +293,21 @@ router.delete("/:id", auth, (req, res) => {
         return res.status(403).json({ message: "Você não pode apagar este jogo." });
       }
 
-      // 2) (opcional) buscar mídias para apagar arquivos do disco
       db.query(
         "SELECT url FROM game_media WHERE game_id = ?",
         [gameId],
         (err2, mediaRows) => {
-          // mesmo que falhe, seguimos com a remoção do banco
           const mediaUrls = err2 || !mediaRows ? [] : mediaRows.map((m) => m.url);
 
-          // 3) apaga do banco (se tiver FK ON DELETE CASCADE em game_media, ótimo)
           db.query("DELETE FROM games WHERE id = ?", [gameId], (err3) => {
             if (err3) return res.status(500).json({ message: "Erro ao apagar jogo." });
 
-            // 4) (opcional) apagar arquivos no disco (capa + mídias)
-            // Se você NÃO quiser apagar arquivos, pode comentar este bloco inteiro.
             try {
               const toDelete = [];
               if (game.cover_url) toDelete.push(game.cover_url);
               toDelete.push(...mediaUrls);
 
               toDelete.forEach((rel) => {
-                // rel vem como "uploads/arquivo.png"
                 const abs = path.join(__dirname, "..", "..", "frontend", rel);
                 if (fs.existsSync(abs)) fs.unlinkSync(abs);
               });
@@ -329,3 +322,5 @@ router.delete("/:id", auth, (req, res) => {
     }
   );
 });
+
+module.exports = router;

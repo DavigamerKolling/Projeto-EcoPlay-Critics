@@ -14,16 +14,15 @@ CREATE TABLE users (
 CREATE TABLE games (
   id INT AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(100) NOT NULL,
-  slug VARCHAR(140) NOT NULL UNIQUE,
-  description TEXT NOT NULL,
-  cover_url VARCHAR(255),
-  youtube_id VARCHAR(32),
   platform VARCHAR(50),
-  platforms_json JSON,
   waste_type VARCHAR(50),
+  description TEXT,
   created_by INT,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (created_by) REFERENCES users(id)
+  slug VARCHAR(150),
+  cover_url VARCHAR(255),
+  youtube_id VARCHAR(50),
+  platforms_json TEXT,
+  links_json TEXT
 );
 
 CREATE TABLE game_media (
@@ -34,3 +33,239 @@ CREATE TABLE game_media (
   sort_order INT DEFAULT 0,
   FOREIGN KEY (game_id) REFERENCES games(id) ON DELETE CASCADE
 );
+
+INSERT INTO games
+(title, slug, description, cover_url, youtube_id, platforms_json, links_json, waste_type, created_by)
+VALUES
+(
+'Beyond Blue',
+'beyond-blue',
+'Beyond Blue é uma narrativa de aventura que explora os mistérios do oceano através dos olhos de uma cientista exploradora.',
+'img/beyond-blue.jpg',
+'pOAWBCXpo6k',
+'["steam","epic","linux","playstation","xbox","switch"]',
+'{
+ "steam":"https://store.steampowered.com/app/883360/Beyond_Blue/",
+ "epic":"https://store.epicgames.com/p/beyond-blue",
+ "playstation":"https://store.playstation.com/",
+ "xbox":"https://www.xbox.com/",
+ "switch":"https://www.nintendo.com/"
+}',
+'ambiental',
+1
+);
+
+INSERT INTO games
+(title, slug, description, cover_url, platforms_json, links_json, waste_type, created_by)
+VALUES
+(
+'Plasticity',
+'plasticity',
+'Um puzzle-platformer em um mundo dominado pelo plástico onde suas escolhas impactam o ambiente.',
+'img/plasticity.jpg',
+'["steam","linux"]',
+'{
+ "steam":"https://store.steampowered.com/",
+ "linux":"https://store.epicgames.com/"
+}',
+'plástico',
+1
+);
+
+INSERT INTO games
+(title, slug, description, cover_url, youtube_id, platforms_json, links_json, waste_type, created_by)
+VALUES
+(
+'Terra Nil',
+'terra-nil',
+'Um construtor de cidades inverso onde o objetivo é restaurar a natureza e não expandir civilizações.',
+'img/terra-nil.jpg',
+'CFw7lPW6WOA',
+'["steam","epic","linux","switch","android","apple"]',
+'{
+ "steam":"https://store.steampowered.com/",
+ "epic":"https://store.epicgames.com/",
+ "switch":"https://www.nintendo.com/"
+}',
+'recuperação ambiental',
+1
+);
+
+INSERT INTO games
+(title, slug, description, cover_url, youtube_id, platforms_json, links_json, waste_type, created_by)
+VALUES
+(
+'Alba: A Wildlife Adventure',
+'alba',
+'Explore uma ilha mediterrânea e ajude a proteger os animais e o meio ambiente.',
+'img/Alba.jpg',
+'a-Eu9WE3grA',
+'["steam","epic","linux","playstation","xbox","switch","android","apple"]',
+'{
+ "steam":"https://store.steampowered.com/",
+ "epic":"https://store.epicgames.com/"
+}',
+'preservação',
+1
+);
+
+INSERT INTO games
+(title, slug, description, cover_url, youtube_id, platforms_json, links_json, waste_type, created_by)
+VALUES
+(
+'Endling - Extinction is Forever',
+'endling',
+'Você controla a última raposa da Terra tentando sobreviver em um mundo destruído pela humanidade.',
+'img/endling.jpg',
+'kiM2_XB_HZE',
+'["steam","epic","linux","playstation","xbox","switch","android","apple"]',
+'{
+ "steam":"https://store.steampowered.com/"
+}',
+'extinção animal',
+1
+);
+
+INSERT INTO games
+(title, slug, description, cover_url, youtube_id, platforms_json, waste_type, created_by)
+VALUES
+(
+'Seeds of Resilience',
+'seeds-of-resilience',
+'Construa uma vila sustentável enfrentando desastres naturais e aprendendo a respeitar a natureza.',
+'img/seeds.jpg',
+'BrLUHKkthdY',
+'["steam","linux","switch"]',
+'sustentabilidade',
+1
+);
+
+INSERT INTO games
+(title, slug, description, cover_url, youtube_id, platforms_json, waste_type, created_by)
+VALUES
+(
+'Eco',
+'eco',
+'Simulador de sociedade onde cada ação do jogador afeta um ecossistema completo e persistente.',
+'img/Eco.jpg',
+'d6zvBdUDMPY',
+'["steam","linux"]',
+'ecossistema',
+1
+);
+
+INSERT INTO games
+(title, slug, description, cover_url, youtube_id, platforms_json, waste_type, created_by)
+VALUES
+(
+'Fate of the World',
+'fate-of-the-world',
+'Jogo de estratégia global focado em mudanças climáticas e políticas ambientais.',
+'img/fate-of-the-world.jpg',
+'pDU-g947NJk',
+'["steam","linux","apple"]',
+'mudanças climáticas',
+1
+);
+
+INSERT INTO games
+(title, slug, description, cover_url, youtube_id, platforms_json, waste_type, created_by)
+VALUES
+(
+'Flower',
+'flower',
+'Experiência relaxante onde você controla o vento e interage com a natureza.',
+'img/flower.jpg',
+'0IS9sGGuvYo',
+'["steam","linux"]',
+'natureza',
+1
+);
+
+INSERT INTO game_media (game_id, media_type, url, sort_order)
+SELECT g.id,'image',CONCAT('img/beyondblue/beyond',n,'.png'),n
+FROM games g
+JOIN (
+SELECT 1 n UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5
+UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10
+UNION SELECT 11 UNION SELECT 12 UNION SELECT 13 UNION SELECT 14 UNION SELECT 15
+UNION SELECT 16 UNION SELECT 17 UNION SELECT 18 UNION SELECT 19 UNION SELECT 20
+) nums
+WHERE g.slug='beyond-blue';
+
+INSERT INTO game_media (game_id, media_type, url, sort_order)
+SELECT g.id,'image',CONCAT('img/plasticity/plasticity',n,'.png'),n
+FROM games g
+JOIN (
+SELECT 1 n UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5
+) nums
+WHERE g.slug='plasticity';
+
+INSERT INTO game_media (game_id, media_type, url, sort_order)
+SELECT g.id,'image',CONCAT('img/terranil/terranil',n,'.png'),n
+FROM games g
+JOIN (
+SELECT 1 n UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5
+UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10
+UNION SELECT 11 UNION SELECT 12 UNION SELECT 13 UNION SELECT 14
+) nums
+WHERE g.slug='terra-nil';
+
+INSERT INTO game_media (game_id, media_type, url, sort_order)
+SELECT g.id,'image',CONCAT('img/alba/alba',n,'.png'),n
+FROM games g
+JOIN (
+SELECT 1 n UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5
+) nums
+WHERE g.slug='alba';
+
+INSERT INTO game_media (game_id, media_type, url, sort_order)
+SELECT g.id,'image',CONCAT('img/endling/endling',n,'.png'),n
+FROM games g
+JOIN (
+SELECT 1 n UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5
+UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10
+UNION SELECT 11 UNION SELECT 12 UNION SELECT 13 UNION SELECT 14 UNION SELECT 15
+UNION SELECT 16 UNION SELECT 17 UNION SELECT 18 UNION SELECT 19
+) nums
+WHERE g.slug='endling';
+
+INSERT INTO game_media (game_id, media_type, url, sort_order)
+SELECT g.id,'image',CONCAT('img/seeds/seeds',n,'.png'),n
+FROM games g
+JOIN (
+SELECT 1 n UNION SELECT 2 UNION SELECT 3 UNION SELECT 4
+UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8
+) nums
+WHERE g.slug='seeds-of-resilience';
+
+INSERT INTO game_media (game_id, media_type, url, sort_order)
+SELECT g.id,'image',CONCAT('img/eco/eco',n,'.png'),n
+FROM games g
+JOIN (
+SELECT 1 n UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5
+UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10
+UNION SELECT 11 UNION SELECT 12 UNION SELECT 13 UNION SELECT 14 UNION SELECT 15
+UNION SELECT 16 UNION SELECT 17 UNION SELECT 18 UNION SELECT 19 UNION SELECT 20
+UNION SELECT 21 UNION SELECT 22 UNION SELECT 23 UNION SELECT 24 UNION SELECT 25
+UNION SELECT 26 UNION SELECT 27 UNION SELECT 28
+) nums
+WHERE g.slug='eco';
+
+INSERT INTO game_media (game_id, media_type, url, sort_order)
+SELECT g.id,'image',CONCAT('img/fotw/fate',n,'.png'),n
+FROM games g
+JOIN (
+SELECT 1 n UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5
+UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10
+) nums
+WHERE g.slug='fate-of-the-world';
+
+INSERT INTO game_media (game_id, media_type, url, sort_order)
+SELECT g.id,'image',CONCAT('img/flower/flower',n,'.png'),n
+FROM games g
+JOIN (
+SELECT 1 n UNION SELECT 2 UNION SELECT 3 UNION SELECT 4
+UNION SELECT 5 UNION SELECT 6 UNION SELECT 7
+) nums
+WHERE g.slug='flower';

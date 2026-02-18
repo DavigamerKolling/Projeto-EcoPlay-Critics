@@ -1,12 +1,12 @@
 const PLATFORMS = [
-  { value: "steam", label: "Steam" },
-  { value: "epic", label: "Epic Games" },
-  { value: "linux", label: "Linux" },
-  { value: "apple", label: "Apple" },
-  { value: "playstation", label: "PlayStation" },
-  { value: "xbox", label: "Xbox" },
-  { value: "switch", label: "Nintendo Switch" },
-  { value: "android", label: "Android" } // você disse que já adicionou
+  { value: "steam", label: "Steam", icon: "/img/platforms/steam.png" },
+  { value: "epic", label: "Epic Games", icon: "/img/platforms/epic.png" },
+  { value: "linux", label: "Linux", icon: "/img/platforms/linux.png" },
+  { value: "apple", label: "Apple", icon: "/img/platforms/apple.png" },
+  { value: "playstation", label: "PlayStation", icon: "/img/platforms/playstation.png" },
+  { value: "xbox", label: "Xbox", icon: "/img/platforms/xbox.png" },
+  { value: "switch", label: "Nintendo Switch", icon: "/img/platforms/switch.png" },
+  { value: "android", label: "Android", icon: "/img/platforms/android.png" }
 ];
 
 function fillSelect(id){
@@ -75,6 +75,20 @@ document.getElementById("createGameForm").addEventListener("submit", async (e) =
   fd.append("description", description);
   fd.append("platforms", JSON.stringify(platforms));
   if (youtubeId) fd.append("youtubeId", youtubeId);
+  
+  // ===== LINKS DAS LOJAS =====
+const links = {
+  steam: document.getElementById("linkSteam").value,
+  epic: document.getElementById("linkEpic").value,
+  playstation: document.getElementById("linkPlaystation").value,
+  xbox: document.getElementById("linkXbox").value,
+  switch: document.getElementById("linkSwitch").value,
+  android: document.getElementById("linkAndroid").value,
+  apple: document.getElementById("linkApple").value,
+  linux: document.getElementById("linkLinux").value
+};
+
+fd.append("links", JSON.stringify(links));
 
   fd.append("cover", coverFile);
   mediaFiles.forEach(f => fd.append("media", f)); // múltiplos

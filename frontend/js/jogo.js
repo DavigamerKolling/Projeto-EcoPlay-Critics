@@ -469,15 +469,35 @@ async function loadFromApi(slug) {
   return {
   id: data.id,
   created_by: data.created_by,
+  slug: data.slug,
   title: data.title,
   cover: data.cover,
   media,
-  platforms: data.platforms,
+  platforms: data.platforms || [],
+  links: data.links || {},
   textHtml: `<p>${(data.description || "").replace(/\n/g, "<br>")}</p>`
 };
 }
 
 // ---------- helpers ----------
+function getOrCreatePlatformsWrap() {
+  // 1) tenta pegar o que deveria existir
+  let el = document.getElementById("platforms");
+  if (el) return el;
+
+  // 2) tenta achar a coluna da direita
+  const side = document.querySelector(".side");
+  if (!side) return null;
+
+  // 3) cria um container e joga dentro da .side
+  el = document.createElement("div");
+  el.id = "platforms";
+  el.className = "platforms"; // (se seu CSS usa .platforms)
+  side.appendChild(el);
+
+  return el;
+}
+
 function getQueryParam(name) {
   const url = new URL(window.location.href);
   return url.searchParams.get(name);
@@ -486,18 +506,16 @@ function getQueryParam(name) {
 // ---------- main ----------
 const id = getQueryParam("id");
 
-let game = GAMES[id];
-
-if (!game) {
-  try {
-    game = await loadFromApi(id); // ← NOVA LINHA
-  } catch (err) {
-    document.title = "EcoPlay Critics - Jogo não encontrado";
-    const text = document.getElementById("gameText");
-    if (text) text.innerHTML = "<p>Jogo não encontrado.</p>";
-    return; // 🔴 IMPORTANTE: para aqui
-  }
+let game;
+try {
+  game = await loadFromApi(id);
+} catch (err) {
+  document.title = "EcoPlay Critics - Jogo não encontrado";
+  const text = document.getElementById("gameText");
+  if (text) text.innerHTML = "<p>Jogo não encontrado.</p>";
+  return;
 }
+
 
 // ✅ a partir daqui, game SEMPRE existe
 document.title = `EcoPlay Critics - ${game.title}`;
@@ -508,7 +526,13 @@ if (coverImg) coverImg.src = game.cover;
 
 // Plataformas
 // Plataformas (ícone clicável -> abre página do jogo na plataforma)
-const platformsWrap = document.getElementById("platforms");
+let platformsWrap = document.getElementById("platforms");
+if (!platformsWrap) {
+  const side = document.querySelector(".side") || document.body;
+  platformsWrap = document.createElement("div");
+  platformsWrap.id = "platforms";
+  side.appendChild(platformsWrap);
+}
 if (platformsWrap) {
   platformsWrap.innerHTML = "";
 
