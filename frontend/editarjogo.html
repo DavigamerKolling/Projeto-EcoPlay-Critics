@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EcoPlay Critics - Editar Jogo</title>
+
+  <link rel="stylesheet" href="css/criarjogo.css" />
+</head>
+<body>
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="brand">
+      <img src="img/logo.png" alt="EcoPlay Critics" class="logo-img" />
+    </div>
+
+    <nav class="navlinks">
+      <a href="jogos.html">Jogos</a><span>|</span>
+      <a href="sobre.html">Sobre Nós</a><span>|</span>
+      <a href="ajuda.html">Ajuda</a>
+    </nav>
+
+    <div class="navright">
+      <div class="searchwrap">
+        <input type="text" placeholder="Procurar" />
+        <span class="search-icon">🔍</span>
+      </div>
+      <div class="profile-area">
+        <div class="profile" onclick="toggleMenu()" title="Conta">
+        <img src="img/profile.png" alt="Perfil">
+        </div>
+        <div class="dropdown" id="dropdown">
+          <button onclick="logout()">Sair</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="content">
+    <form id="createGameForm" class="card">
+      <input id="title" class="inp" type="text" placeholder="Nome do Jogo" required />
+
+      <textarea id="description" class="area" placeholder="Descrição do Jogo" required></textarea>
+
+      <label class="lbl">Capa do Jogo:</label>
+      <input id="cover" type="file" accept="image/*" required />
+      <button class="mini-btn" type="button" id="btnCoverInfo">Enviar</button>
+
+      <label class="lbl">Imagens e Vídeos do Jogo:</label>
+      <!-- imagens/vídeos locais (mp4/webm) -->
+      <input id="mediaFiles" type="file" accept="image/*,video/*" multiple />
+      <button class="mini-btn" type="button" id="btnMediaInfo">Enviar</button>
+
+      <label class="lbl">Trailer (YouTube) - opcional:</label>
+      <input id="youtube" class="inp" type="text" placeholder="Cole o link do YouTube (opcional)" />
+
+      <!-- 8 plataformas (inclui Android que você já adicionou) -->
+      <select class="sel" id="plat1"><option value="">Plataforma 1</option></select>
+      <select class="sel" id="plat2"><option value="">Plataforma 2</option></select>
+      <select class="sel" id="plat3"><option value="">Plataforma 3</option></select>
+      <select class="sel" id="plat4"><option value="">Plataforma 4</option></select>
+      <select class="sel" id="plat5"><option value="">Plataforma 5</option></select>
+      <select class="sel" id="plat6"><option value="">Plataforma 6</option></select>
+      <select class="sel" id="plat7"><option value="">Plataforma 7</option></select>
+      <select class="sel" id="plat8"><option value="">Plataforma 8</option></select>
+
+      <button class="main-btn" type="submit">Salvar Alterações</button>
+      <p id="msg" class="msg"></p>
+    </form>
+  </main>
+
+  <script src="js/editarjogo.js"></script>
+  <script src="js/logout.js"></script>
+</body>
+</html>

@@ -50,6 +50,49 @@ router.get("/", (req, res) => {
   });
 });
 
+/* ====== EDITAR JOGO ====== */
+router.put(
+  "/:slug",
+  auth,
+  upload.fields([{ name: "cover", maxCount: 1 }, { name: "media", maxCount: 12 }]),
+  (req, res) => {
+    const slug = req.params.slug;
+    const { title, description, waste_type, youtubeId } = req.body;
+
+    let platforms = [];
+    try {
+      platforms = JSON.parse(req.body.platforms || "[]");
+    } catch {
+      platforms = [];
+    }
+
+    // monta atualização
+    const fields = [
+      title,
+      description,
+      youtubeId || null,
+      JSON.stringify(platforms),
+      waste_type || null,
+      slug
+    ];
+
+    db.query(
+      `UPDATE games
+       SET title = ?, description = ?, youtube_id = ?, platforms_json = ?, waste_type = ?
+       WHERE slug = ?`,
+      fields,
+      (err, result) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).json({ message: "Erro ao atualizar jogo." });
+        }
+
+        return res.json({ message: "Jogo atualizado com sucesso!" });
+      }
+    );
+  }
+);
+
 /* ====== NOVO: CRIAR JOGO COMPLETO (capa + mídias + slug) ======
    Endpoint: POST /api/games/create
    Body: multipart/form-data

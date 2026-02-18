@@ -563,6 +563,17 @@ if (deleteBtn && game?.id && game?.created_by && token) {
   });
 }
 
+const editBtn = document.getElementById("editGameBtn");
+
+if (editBtn && game?.id && token) {
+  editBtn.style.display = "inline-block";
+
+  editBtn.addEventListener("click", () => {
+    // manda para página de edição
+    window.location.href = `editarjogo.html?id=${game.slug}`;
+  });
+}
+
 if (prevBtn) {
   prevBtn.addEventListener("click", () => {
     if (mediaList.length === 0) return;
