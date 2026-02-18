@@ -46,7 +46,13 @@ const GAMES = {
       { type: "video", youtube: "kN1PcV7vwyU" },
       { type: "video", youtube: "2HZ5-2jok5Y" }
     ],
-    
+    links: {
+    steam: "https://store.steampowered.com/app/883360/Beyond_Blue/",
+    epic: "https://store.epicgames.com/p/beyond-blue",
+    playstation: "https://store.playstation.com/", 
+    xbox: "https://www.xbox.com/",
+    switch: "https://www.nintendo.com/"
+  },
     platforms: ["steam", "epic", "linux", "playstation", "xbox", "switch"],
 
     textHtml: `
@@ -86,6 +92,10 @@ const GAMES = {
       { type: "image", src: "img/plasticity/plasticity5.png" }
     ],
     platforms: ["steam", "linux"],
+    links: {
+    steam: "https://store.steampowered.com/app/883360/Beyond_Blue/",
+    linux: "https://store.epicgames.com/p/beyond-blue"
+  },
     textHtml: `<p>2140. A future where plastic consumption has never ended, leaving lifeless lands, flooded cities, and widespread debris in its wake…</p>
     
     <p>Plasticity is an innovative puzzle-platformer about a plastic-ridden world and the choices you make to save it. Play as Noa, a curious young girl who leaves her home in search of a better life. Embark on an emotional journey as your actions dynamically change both gameplay and the story. While each decision carries consequence, few are irreversible—you may stumble, you may fall, but only you can save the world.</p>
@@ -116,6 +126,14 @@ const GAMES = {
       { type: "video", youtube: "mzVkzahcepY" }
     ],
     platforms: ["steam", "epic", "linux", "switch", "android", "apple"],
+    links: {
+    steam: "https://store.steampowered.com/app/883360/Beyond_Blue/",
+    epic: "https://store.epicgames.com/p/beyond-blue",
+    linux: "https://store.epicgames.com/p/beyond-blue",
+    switch: "https://www.nintendo.com/",
+    android: "https://store.epicgames.com/p/beyond-blue",
+    apple: "https://store.epicgames.com/p/beyond-blue"
+  },
     textHtml: `<p><b>Terra Nil</b> é um jogo que explora a transformação de paisagens devastadas, sem vida, em ecossistemas vibrantes e férteis. Transforme o solo morto em vegetações ricas, limpe oceanos poluídos, plante florestas verdejantes e crie o hábitat natural para animais chamarem de lar. Em seguida, recicle suas construções sem deixar vestígios da sua presença. Recupere terras inférteis.</p>
     <p><b>Um construtor de cidades inverso</b></p>
     <p>Use tecnologia avançada para purificar o solo, produzindo planícies, brejos, praias, florestas tropicais, flores silvestres e mais. Em seguida, recicle tudo que construiu, deixando o ambiente virgem para os animais que serão seus novos habitantes.</p>`
@@ -134,6 +152,16 @@ const GAMES = {
       { type: "image", src: "img/alba/alba5.png" }
     ],
     platforms: ["steam", "epic", "linux", "playstation", "xbox", "switch", "android", "apple"],
+    links: {
+    steam: "https://store.steampowered.com/app/883360/Beyond_Blue/",
+    epic: "https://store.epicgames.com/p/beyond-blue",
+    linux: "https://store.epicgames.com/p/beyond-blue",
+    playstation: "https://store.playstation.com/", 
+    xbox: "https://www.xbox.com/",
+    switch: "https://www.nintendo.com/",
+    android: "https://store.epicgames.com/p/beyond-blue",
+    apple: "https://store.epicgames.com/p/beyond-blue"
+  },
     textHtml: `<p>From the BAFTA-Award winning studio behind Monument Valley and Assemble with Care comes something entirely new.</p>
     
     <p>Join Alba as she visits her grandparents on a Mediterranean island. She is ready for a peaceful summer of wildlife exploration with her friend Ines, but when she sees an animal in danger, she realises she needs to do something about it.</p>
@@ -185,6 +213,16 @@ const GAMES = {
       { type: "video", youtube: "oqj__NZXb58" }
     ],
     platforms: ["steam", "epic", "linux", "playstation", "xbox", "switch", "android", "apple"],
+    links: {
+    steam: "https://store.steampowered.com/app/883360/Beyond_Blue/",
+    epic: "https://store.epicgames.com/p/beyond-blue",
+    linux: "https://store.epicgames.com/p/beyond-blue",
+    playstation: "https://store.playstation.com/", 
+    xbox: "https://www.xbox.com/",
+    switch: "https://www.nintendo.com/",
+    android: "https://store.epicgames.com/p/beyond-blue",
+    apple: "https://store.epicgames.com/p/beyond-blue"
+  },
     textHtml: `<p><b>Será que uma raposa mãe conseguirá manter seus filhotes vivos?</b>
     
     <p><b>Experimente</b> um mundo devastado pela humanidade pelos olhos da última raposa da Terra nesta aventura ecológica.</p>
@@ -221,6 +259,11 @@ const GAMES = {
       { type: "image", src: "img/seeds/seeds8.png" }
     ],
     platforms: ["steam", "linux", "switch"],
+    links: {
+    steam: "https://store.steampowered.com/app/883360/Beyond_Blue/",
+    linux: "https://store.epicgames.com/p/beyond-blue",
+    switch: "https://www.nintendo.com/"
+  },
     textHtml: `<p><b>Build a new village from scratch</b></p>
     
     <p>Build a village on a deserted island, and prepare for merciless natural disasters! Learn to choose the right items, understand nature's patterns, use real medieval construction and craft techniques in this turn-based management game.</p>
@@ -282,6 +325,10 @@ const GAMES = {
       { type: "video", youtube: "ud_refZuQoA" }
     ],
     platforms: ["steam", "linux"],
+    links: {
+    steam: "https://store.steampowered.com/app/883360/Beyond_Blue/",
+    linux: "https://store.epicgames.com/p/beyond-blue",
+  },
     textHtml: `<p><b>A Tragédia Do Povo, O Jogo</b></p>
     
     <p>Entre no mundo de Eco, um ecossistema totalmente simulado fervilhando com milhares de plantas e animais em crescimento vivendo as suas vidas. Construa, colha e pegue recursos em ambiente em que cada ação sua afeta o mundo ao seu redor. A iminente queda de um meteoro ameaça destruir o mundo. Você é capaz de salvar o mundo sem destruí-lo no processo?</p>
@@ -348,6 +395,11 @@ const GAMES = {
       { type: "image", src: "img/fotw/fate10.png" }
     ],
     platforms: ["steam", "linux", "apple"],
+    links: {
+    steam: "https://store.steampowered.com/app/883360/Beyond_Blue/",
+    linux: "https://store.epicgames.com/p/beyond-blue",
+    apple: "https://store.playstation.com/", 
+  },
     textHtml: `<p>Fate of the World is a dramatic global strategy game that puts all our futures in your hands. The game features a dramatic set of scenarios based on the latest science covering the next two centuries. You must manage a balancing act of protecting the Earth's resources and climate versus the needs of an ever-growing world population, who are demanding ever more food, power, and living space. Will you help the whole planet or will you be an agent of destruction?</p>
     
     <p>Fate of the World is brought to you by the award-winning Red Redemption games team and Battlestations: Midway Producer Klaude Thomas with climate science by Dr. Myles Allen (University of Oxford), writing by David Bishop (Dr. Who, 2000AD) and music composed by Richard Jacques (<b>Mass Effect, Alice in Wonderland) with game design by veteran game designer Matthew Miles Griffiths (Conflict: Desert Storm, Battlestations: Midway).</p>
@@ -384,6 +436,10 @@ const GAMES = {
       { type: "image", src: "img/flower/flower7.png" }
     ],
     platforms: ["steam", "linux"],
+    links: {
+    steam: "https://store.steampowered.com/app/883360/Beyond_Blue/",
+    linux: "https://store.epicgames.com/p/beyond-blue",
+  },
     textHtml: `<p>Experimente o premiado Flower, agora disponível para PC. Flower permite que você assuma o controle do vento enquanto explora ambientes lindos e exuberantes usando controles de movimento. Aventure-se por várias paisagens no seu próprio ritmo, interagindo e alterando o ambiente e encontre o equilíbrio e a harmonia de seus arredores.</p>
     
     <p>Essa é uma fuga interativa que vai levar você em uma jornada cativante como nenhum outro jogo.</p>
@@ -451,20 +507,29 @@ const coverImg = document.getElementById("coverImg");
 if (coverImg) coverImg.src = game.cover;
 
 // Plataformas
+// Plataformas (ícone clicável -> abre página do jogo na plataforma)
 const platformsWrap = document.getElementById("platforms");
 if (platformsWrap) {
   platformsWrap.innerHTML = "";
-  (game.platforms || []).forEach((p) => {
-    const div = document.createElement("div");
-    div.className = "platform";
-    const icon = PLATFORM_ICONS[p];
 
-    // se não achar ícone, mostra texto
-    div.innerHTML = icon
+  (game.platforms || []).forEach((p) => {
+    const icon = PLATFORM_ICONS[p];
+    const url = game.links?.[p]; // pega o link do jogo naquela plataforma (se existir)
+
+    const item = document.createElement(url ? "a" : "div");
+    item.className = "platform";
+    if (url) {
+      item.href = url;
+      item.target = "_blank";
+      item.rel = "noopener noreferrer";
+      item.title = `Abrir na plataforma: ${p}`;
+    }
+
+    item.innerHTML = icon
       ? `<img src="${icon}" alt="${p}">`
       : `<span style="font-family: Arial, sans-serif; font-size: 12px;">${p}</span>`;
 
-    platformsWrap.appendChild(div);
+    platformsWrap.appendChild(item);
   });
 }
 
