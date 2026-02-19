@@ -21,6 +21,35 @@ function fillSelect(id){
 
 ["plat1","plat2","plat3","plat4","plat5","plat6","plat7","plat8"].forEach(fillSelect);
 
+const PLATFORM_SELECT_IDS = ["plat1","plat2","plat3","plat4","plat5","plat6","plat7","plat8"];
+
+function updatePlatformOptions(){
+  const selects = PLATFORM_SELECT_IDS
+    .map(id => document.getElementById(id))
+    .filter(Boolean);
+
+  const selected = selects
+    .map(s => (s.value || "").trim())
+    .filter(Boolean);
+
+  selects.forEach(sel => {
+    const current = (sel.value || "").trim();
+    Array.from(sel.options).forEach(opt => {
+      const v = (opt.value || "").trim();
+      if (!v) return;
+      opt.disabled = selected.includes(v) && v !== current;
+    });
+  });
+}
+
+PLATFORM_SELECT_IDS.forEach(id => {
+  const sel = document.getElementById(id);
+  if (!sel) return;
+  sel.addEventListener("change", updatePlatformOptions);
+});
+
+updatePlatformOptions();
+
 function extractYouTubeId(url) {
   if (!url) return "";
   try {
@@ -63,31 +92,46 @@ document.getElementById("createGameForm").addEventListener("submit", async (e) =
     .map(id => document.getElementById(id).value)
     .filter(Boolean);
 
+  const uniquePlatforms = Array.from(new Set(platforms));
+  if (platforms.length !== uniquePlatforms.length) {
+    msg.textContent = "Você não pode selecionar a mesma plataforma mais de uma vez.";
+    return;
+  }
+
   if (!title || !description || !coverFile) {
     msg.textContent = "Preencha nome, descrição e selecione a capa.";
     return;
   }
 
+  const getVal = (id) => (document.getElementById(id)?.value || "").trim();
+
+  const links = {
+    steam: getVal("linkSteam"),
+    epic: getVal("linkEpic"),
+    playstation: getVal("linkPlaystation"),
+    xbox: getVal("linkXbox"),
+    switch: getVal("linkSwitch"),
+    android: getVal("linkAndroid"),
+    apple: getVal("linkApple"),
+    linux: getVal("linkLinux")
+  };
+
+  const platformLabel = (p) => (PLATFORMS.find(x => x.value === p)?.label || p);
+  for (const p of uniquePlatforms) {
+    const url = (links[p] || "").trim();
+    if (!url) {
+      msg.textContent = `O link da plataforma ${platformLabel(p)} é obrigatório.`;
+      return;
+    }
+  }
+
   const fd = new FormData();
   fd.append("title", title);
   fd.append("description", description);
-  fd.append("platforms", JSON.stringify(platforms));
+  fd.append("platforms", JSON.stringify(uniquePlatforms));
   if (youtubeId) fd.append("youtubeId", youtubeId);
-  
-const getVal = (id) => (document.getElementById(id)?.value || "").trim();
 
-const links = {
-  steam: getVal("linkSteam"),
-  epic: getVal("linkEpic"),
-  playstation: getVal("linkPlaystation"),
-  xbox: getVal("linkXbox"),
-  switch: getVal("linkSwitch"),
-  android: getVal("linkAndroid"),
-  apple: getVal("linkApple"),
-  linux: getVal("linkLinux")
-};
-
-fd.append("links", JSON.stringify(links));
+  fd.append("links", JSON.stringify(links));
 
   fd.append("cover", coverFile);
   mediaFiles.forEach(f => fd.append("media", f));
@@ -98,7 +142,7 @@ fd.append("links", JSON.stringify(links));
       headers: { Authorization: `Bearer ${token}` },
       body: fd
     });
-    
+
     const data = await res.json().catch(() => ({}));
 
     if (!res.ok) {

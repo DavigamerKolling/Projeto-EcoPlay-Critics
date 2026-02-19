@@ -12,6 +12,30 @@
   };
 
   const GAMES = {};
+  
+    const LOCKED_SLUGS = new Set([
+    "beyond-blue",
+    "plasticity",
+    "terra-nil",
+    "alba",
+    "endling",
+    "eco",
+    "flower",
+    "seeds-of-resilience",
+    "fate-of-the-world"
+  ]);
+
+  const SYSTEM_GAME_SLUGS = new Set([
+    "beyond-blue",
+    "plasticity",
+    "terra-nil",
+    "alba",
+    "endling",
+    "seeds-of-resilience",
+    "eco",
+    "fate-of-the-world",
+    "flower"
+  ]);
 
   async function loadFromApi(slug) {
     const res = await fetch(
@@ -57,6 +81,21 @@
   function getQueryParam(name) {
     const url = new URL(window.location.href);
     return url.searchParams.get(name);
+  }
+
+  function getLoggedUserId() {
+    const token = localStorage.getItem("token");
+    if (!token) return null;
+
+    try {
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      const id = payload.id;
+      if (id === undefined || id === null) return null;
+      const n = Number(id);
+      return Number.isFinite(n) ? n : null;
+    } catch {
+      return null;
+    }
   }
 
   const id = getQueryParam("id");
@@ -151,25 +190,45 @@
       return;
     }
 
-  if ((item.type === "video" || item.type === "video_file") && item.src) {
-  const video = document.createElement("video");
-  video.src = item.src;
-  video.controls = true;
-  video.playsInline = true;
-  mediaFrame.appendChild(video);
-  return;
-}
-
+    if ((item.type === "video" || item.type === "video_file") && item.src) {
+      const video = document.createElement("video");
+      video.src = item.src;
+      video.controls = true;
+      video.playsInline = true;
+      mediaFrame.appendChild(video);
+      return;
+    }
 
     mediaFrame.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-family:Arial,sans-serif;">Mídia inválida</div>`;
   }
 
   renderMedia(mediaList[0]);
 
-  const deleteBtn = document.getElementById("deleteGameBtn");
+    const deleteBtn = document.getElementById("deleteGameBtn");
+  const editBtn = document.getElementById("editGameBtn");
   const token = localStorage.getItem("token");
 
-  if (deleteBtn && game?.id && game?.created_by && token) {
+  const loggedUserId = getLoggedUserId();
+
+  const createdByRaw = game?.created_by;
+  const createdBy =
+    createdByRaw === undefined || createdByRaw === null || createdByRaw === ""
+      ? null
+      : Number(createdByRaw);
+
+  const isOwner =
+    loggedUserId !== null &&
+    createdBy !== null &&
+    Number.isFinite(createdBy) &&
+    loggedUserId === createdBy;
+  
+  const isLocked = LOCKED_SLUGS.has(String(game?.slug || id || "").toLowerCase());
+  const canEditDelete = isOwner && !isLocked;
+
+  if (deleteBtn) deleteBtn.style.display = "none";
+  if (editBtn) editBtn.style.display = "none";
+
+  if (deleteBtn && game?.id && token && canEditDelete) {
     deleteBtn.style.display = "inline-block";
 
     deleteBtn.addEventListener("click", async () => {
@@ -195,9 +254,7 @@
     });
   }
 
-  const editBtn = document.getElementById("editGameBtn");
-
-  if (editBtn && game?.id && token) {
+  if (editBtn && game?.id && token && canEditDelete) {
     editBtn.style.display = "inline-block";
 
     editBtn.addEventListener("click", () => {

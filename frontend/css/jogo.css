@@ -305,7 +305,8 @@ body{
 }
 
 .comment{
-  background:#1c1c1c;
+  background:#ffffff;
+  border: 1px solid #000000;
   padding:12px;
   border-radius:6px;
   margin-bottom:12px;

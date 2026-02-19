@@ -3,7 +3,6 @@ const router = express.Router();
 const db = require("../db");
 const auth = require("../middleware/auth");
 
-/* ====== NOVO (uploads) ====== */
 const path = require("path");
 const fs = require("fs");
 const multer = require("multer");
@@ -27,10 +26,49 @@ const storage = multer.diskStorage({
   }
 });
 
+const ALLOWED_MIME = new Set([
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/gif",
+  "video/mp4",
+  "video/webm",
+  "video/quicktime"
+]);
+
 const upload = multer({
   storage,
-  limits: { fileSize: 25 * 1024 * 1024 }
+  limits: { fileSize: 25 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    if (!ALLOWED_MIME.has(file.mimetype)) {
+      return cb(new Error("Tipo de arquivo não permitido. Envie apenas imagens ou vídeos."));
+    }
+    cb(null, true);
+  }
 });
+
+function withUpload(mw) {
+  return (req, res, next) => {
+    mw(req, res, (err) => {
+      if (!err) return next();
+      return res.status(400).json({ message: err.message || "Arquivo inválido." });
+    });
+  };
+}
+
+function sanitizePlatforms(arr) {
+  const out = [];
+  const seen = new Set();
+  for (const p of Array.isArray(arr) ? arr : []) {
+    const v = String(p || "").trim();
+    if (!v) continue;
+    const key = v.toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(v);
+  }
+  return out;
+}
 
 router.post("/", auth, (req, res) => {
   const { title, platform, waste_type, description } = req.body;
@@ -51,7 +89,7 @@ router.get("/", (req, res) => {
 router.put(
   "/:slug",
   auth,
-  upload.fields([{ name: "cover", maxCount: 1 }, { name: "media", maxCount: 12 }]),
+  withUpload(upload.fields([{ name: "cover", maxCount: 1 }, { name: "media", maxCount: 12 }])),
   (req, res) => {
     const slug = req.params.slug;
     const { title, description, waste_type, youtubeId } = req.body;
@@ -61,6 +99,10 @@ router.put(
       platforms = JSON.parse(req.body.platforms || "[]");
     } catch {
       platforms = [];
+    }
+    platforms = sanitizePlatforms(platforms);
+    if (!platforms.length) {
+      return res.status(400).json({ message: "Selecione pelo menos uma plataforma." });
     }
 
     let links = {};
@@ -154,13 +196,10 @@ router.put(
   }
 );
 
-/* ====== NOVO: CRIAR JOGO COMPLETO (capa + mídias + slug) ======
-   Endpoint: POST /api/games/create
-*/
 router.post(
   "/create",
   auth,
-  upload.fields([{ name: "cover", maxCount: 1 }, { name: "media", maxCount: 12 }]),
+  withUpload(upload.fields([{ name: "cover", maxCount: 1 }, { name: "media", maxCount: 12 }])),
   (req, res) => {
     try {
       const { title, description, waste_type, youtubeId } = req.body;
@@ -170,6 +209,10 @@ router.post(
         platforms = JSON.parse(req.body.platforms || "[]");
       } catch {
         platforms = [];
+      }
+      platforms = sanitizePlatforms(platforms);
+      if (!platforms.length) {
+        return res.status(400).json({ message: "Selecione pelo menos uma plataforma." });
       }
 
       let links = {};
@@ -266,7 +309,6 @@ router.post(
   }
 );
 
-/* ====== NOVO: BUSCAR JOGO POR SLUG ====== */
 router.get("/slug/:slug", (req, res) => {
   const slug = req.params.slug;
 

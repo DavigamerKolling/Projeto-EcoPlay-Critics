@@ -32,6 +32,29 @@ function fillSelect(id) {
 const platformIds = ["plat1","plat2","plat3","plat4","plat5","plat6","plat7","plat8"];
 platformIds.forEach(fillSelect);
 
+function updatePlatformOptions(){
+  const selects = platformIds.map(id => document.getElementById(id)).filter(Boolean);
+
+  const selected = selects
+    .map(s => (s.value || "").trim())
+    .filter(Boolean);
+
+  selects.forEach(sel => {
+    const current = (sel.value || "").trim();
+    Array.from(sel.options).forEach(opt => {
+      const v = (opt.value || "").trim();
+      if (!v) return;
+      opt.disabled = selected.includes(v) && v !== current;
+    });
+  });
+}
+
+platformIds.forEach(id => {
+  const sel = document.getElementById(id);
+  if (!sel) return;
+  sel.addEventListener("change", updatePlatformOptions);
+});
+
 fetch(`/api/games/slug/${slug}`)
   .then(res => res.json())
   .then(game => {
@@ -43,6 +66,8 @@ fetch(`/api/games/slug/${slug}`)
       const sel = document.getElementById(id);
       if (sel) sel.value = plats[i] || "";
     });
+
+    updatePlatformOptions();
 
     const links = game.links || {};
     const setVal = (id, val) => {
@@ -123,7 +148,19 @@ document.getElementById("submitGame").addEventListener("click", async (e) => {
   const platforms = platformIds
     .map(id => (document.getElementById(id)?.value || "").trim())
     .filter(Boolean);
-  formData.append("platforms", JSON.stringify(platforms));
+
+  const uniquePlatforms = Array.from(new Set(platforms));
+  if (platforms.length !== uniquePlatforms.length) {
+    alert("Você não pode selecionar a mesma plataforma mais de uma vez.");
+    return;
+  }
+
+  if (uniquePlatforms.length === 0) {
+    alert("Selecione pelo menos uma plataforma.");
+    return;
+  }
+
+  formData.append("platforms", JSON.stringify(uniquePlatforms));
 
   const getVal = (id) => (document.getElementById(id)?.value || "").trim();
   const links = {
@@ -136,6 +173,15 @@ document.getElementById("submitGame").addEventListener("click", async (e) => {
     apple: getVal("linkApple"),
     linux: getVal("linkLinux")
   };
+
+  const platformLabel = (p) => (PLATFORMS.find(x => x.value === p)?.label || p);
+  for (const p of uniquePlatforms) {
+    const url = (links[p] || "").trim();
+    if (!url) {
+      alert(`O link da plataforma ${platformLabel(p)} é obrigatório.`);
+      return;
+    }
+  }
 
   Object.keys(links).forEach(k => { if (!links[k]) delete links[k]; });
 

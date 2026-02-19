@@ -27,6 +27,7 @@ searchInput.addEventListener("input", () => {
   });
 
   noResults.style.display = (q && visible === 0) ? "block" : "none";
+  refreshAllArrows();
 });
 
 function updateArrowsForRow(row) {
@@ -42,6 +43,8 @@ function updateArrowsForRow(row) {
   const rightArrow = arrows.find(a => String(a.dataset.dir || "").trim() !== "-1" && !a.classList.contains("left"));
 
   const maxScroll = Math.max(0, row.scrollWidth - row.clientWidth);
+  if (row.scrollLeft > maxScroll) row.scrollLeft = maxScroll;
+
   const atStart = row.scrollLeft <= 0;
   const atEnd = row.scrollLeft >= (maxScroll - 1);
   const noScroll = maxScroll <= 1;
