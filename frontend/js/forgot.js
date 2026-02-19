@@ -1,17 +1,28 @@
 async function recuperar(){
-  const email = document.getElementById("email").value;
+  const email = document.getElementById("email").value.trim();
 
-  const res = await fetch("http://localhost:3000/auth/forgot", {
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body: JSON.stringify({ email })
-  });
+  if(!email){
+    alert("Digite seu email.");
+    return;
+  }
 
-  const data = await res.json();
+  try{
+    const res = await fetch("http://localhost:3000/auth/forgot", {
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify({ email })
+    });
 
-  if(data.token){
-    window.location.href = "reset.html?token=" + data.token;
-  } else {
-    alert("Email não encontrado");
+    const data = await res.json();
+
+    if(res.ok){
+      document.getElementById("formBox").style.display = "none";
+      document.getElementById("successBox").style.display = "block";
+    }else{
+      alert(data.error || "Erro ao enviar email.");
+    }
+
+  }catch(err){
+    alert("Erro de conexão com o servidor.");
   }
 }

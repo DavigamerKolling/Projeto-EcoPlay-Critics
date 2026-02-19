@@ -8,10 +8,11 @@
   <link rel="stylesheet" href="css/criarjogo.css" />
 </head>
 <body>
-  <!-- NAVBAR -->
   <header class="navbar">
     <div class="brand">
-      <img src="img/logo.png" alt="EcoPlay Critics" class="logo-img" />
+     <a href="index.html" class="logo-link">
+       <img src="img/logo.png" alt="EcoPlay Critics" class="logo-img">
+     </a>
     </div>
 
     <nav class="navlinks">
@@ -47,14 +48,12 @@
       <button class="mini-btn" type="button" id="btnCoverInfo">Enviar</button>
 
       <label class="lbl">Imagens e Vídeos do Jogo:</label>
-      <!-- imagens/vídeos locais (mp4/webm) -->
       <input id="mediaFiles" type="file" accept="image/*,video/*" multiple />
       <button class="mini-btn" type="button" id="btnMediaInfo">Enviar</button>
 
       <label class="lbl">Trailer (YouTube) - opcional:</label>
       <input id="youtube" class="inp" type="text" placeholder="Cole o link do YouTube (opcional)" />
 
-      <!-- 8 plataformas (inclui Android que você já adicionou) -->
       <select class="sel" id="plat1"><option value="">Plataforma 1</option></select>
       <select class="sel" id="plat2"><option value="">Plataforma 2</option></select>
       <select class="sel" id="plat3"><option value="">Plataforma 3</option></select>

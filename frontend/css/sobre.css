@@ -1,7 +1,6 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { background: #fff; font-family: "IM Fell English SC", serif;}
 
-/* ===== NAVBAR ===== */
 .navbar{
   height: 80px;
   background: #000;
@@ -66,7 +65,6 @@ body { background: #fff; font-family: "IM Fell English SC", serif;}
   user-select: none;
 }
 
-/* ===== Perfil / Logout (igual jogos.html) ===== */
 .profile-area {
   position: relative;
   display: flex;
@@ -87,7 +85,6 @@ body { background: #fff; font-family: "IM Fell English SC", serif;}
   object-fit: cover;
 }
 
-/* Dropdown */
 .dropdown {
   position: absolute;
   top: 46px;
@@ -123,20 +120,18 @@ body { background: #fff; font-family: "IM Fell English SC", serif;}
   font-family: Georgia, serif;
 }
 
-/* Classe que abre o menu */
 .dropdown.active {
   display: block;
 }
 
-/* ===== CONTEÚDO ===== */
 .about{
   padding: 26px 30px;
 }
 
 .about-box{
   max-width: 980px;
-  margin: 0 auto;        /* <-- centraliza o bloco na página */
-  text-align: center;    /* <-- centraliza o texto */
+  margin: 0 auto;
+  text-align: center;
 }
 
 .about-box p{
@@ -146,18 +141,16 @@ body { background: #fff; font-family: "IM Fell English SC", serif;}
   color: #111;
 }
 
-/* “No EcoPlay...” */
 .lead{
   margin-top: 18px;
 }
 
-/* lista com hífen visual */
 .bullets{
   list-style: none;
   margin: 12px auto 18px auto;
   padding: 0;
-  display: inline-block;   /* mantém o bloco centralizado */
-  text-align: left;        /* texto da lista fica legível */
+  display: inline-block;
+  text-align: left;
 }
 
 .bullets li{
@@ -171,14 +164,12 @@ body { background: #fff; font-family: "IM Fell English SC", serif;}
   content: "- ";
 }
 
-/* mensagem final centralizada */
 .welcome{
   text-align: center;
   margin-top: 18px;
   font-size: 20px;
 }
 
-/* botão verde */
 .btn-wrap{
   display: flex;
   justify-content: center;

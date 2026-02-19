@@ -25,11 +25,8 @@ function extractYouTubeId(url) {
   if (!url) return "";
   try {
     const u = new URL(url);
-    // youtu.be/ID
     if (u.hostname.includes("youtu.be")) return u.pathname.replace("/", "");
-    // youtube.com/watch?v=ID
     if (u.searchParams.get("v")) return u.searchParams.get("v");
-    // youtube.com/embed/ID
     const parts = u.pathname.split("/");
     const embedIndex = parts.indexOf("embed");
     if (embedIndex >= 0 && parts[embedIndex+1]) return parts[embedIndex+1];
@@ -37,9 +34,11 @@ function extractYouTubeId(url) {
   return "";
 }
 
-// Só pra “ficar igual ao mockup” (botões Enviar que não precisam realmente enviar)
-document.getElementById("btnCoverInfo").onclick = () => alert("Capa selecionada.");
-document.getElementById("btnMediaInfo").onclick = () => alert("Mídias selecionadas.");
+const btnCover = document.getElementById("btnCoverInfo");
+if (btnCover) btnCover.onclick = () => alert("Capa selecionada.");
+
+const btnMedia = document.getElementById("btnMediaInfo");
+if (btnMedia) btnMedia.onclick = () => alert("Mídias selecionadas.");
 
 document.getElementById("createGameForm").addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -47,7 +46,7 @@ document.getElementById("createGameForm").addEventListener("submit", async (e) =
   const msg = document.getElementById("msg");
   msg.textContent = "";
 
-  const token = localStorage.getItem("token"); // seu JWT do login
+  const token = localStorage.getItem("token");
   if (!token) {
     msg.textContent = "Você precisa estar logado para criar jogos.";
     return;
@@ -69,29 +68,29 @@ document.getElementById("createGameForm").addEventListener("submit", async (e) =
     return;
   }
 
-  // monta o multipart/form-data
   const fd = new FormData();
   fd.append("title", title);
   fd.append("description", description);
   fd.append("platforms", JSON.stringify(platforms));
   if (youtubeId) fd.append("youtubeId", youtubeId);
   
-  // ===== LINKS DAS LOJAS =====
+const getVal = (id) => (document.getElementById(id)?.value || "").trim();
+
 const links = {
-  steam: document.getElementById("linkSteam").value,
-  epic: document.getElementById("linkEpic").value,
-  playstation: document.getElementById("linkPlaystation").value,
-  xbox: document.getElementById("linkXbox").value,
-  switch: document.getElementById("linkSwitch").value,
-  android: document.getElementById("linkAndroid").value,
-  apple: document.getElementById("linkApple").value,
-  linux: document.getElementById("linkLinux").value
+  steam: getVal("linkSteam"),
+  epic: getVal("linkEpic"),
+  playstation: getVal("linkPlaystation"),
+  xbox: getVal("linkXbox"),
+  switch: getVal("linkSwitch"),
+  android: getVal("linkAndroid"),
+  apple: getVal("linkApple"),
+  linux: getVal("linkLinux")
 };
 
 fd.append("links", JSON.stringify(links));
 
   fd.append("cover", coverFile);
-  mediaFiles.forEach(f => fd.append("media", f)); // múltiplos
+  mediaFiles.forEach(f => fd.append("media", f));
 
   try {
     const res = await fetch("http://localhost:3000/api/games/create", {
@@ -99,7 +98,7 @@ fd.append("links", JSON.stringify(links));
       headers: { Authorization: `Bearer ${token}` },
       body: fd
     });
-
+    
     const data = await res.json().catch(() => ({}));
 
     if (!res.ok) {
@@ -108,7 +107,6 @@ fd.append("links", JSON.stringify(links));
     }
 
     msg.textContent = "Jogo criado com sucesso! Abrindo página...";
-    // redireciona pra “página própria” do jogo (dinâmica)
     window.location.href = `jogo.html?id=${encodeURIComponent(data.slug)}`;
   } catch (err) {
     console.error(err);
@@ -126,7 +124,6 @@ function toggleMenu() {
   if (dropdown) dropdown.classList.toggle("active");
 }
 
-// Fecha o dropdown clicando fora
 document.addEventListener("click", (e) => {
   const dropdown = document.getElementById("dropdown");
   const profileArea = document.querySelector(".profile-area");

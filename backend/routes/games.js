@@ -16,7 +16,6 @@ function slugify(str) {
     .replace(/(^-|-$)/g, "");
 }
 
-// pasta onde vai salvar uploads (ajuste se o seu static for outro)
 const UPLOAD_DIR = path.join(__dirname, "..", "..", "frontend", "uploads");
 if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 
@@ -30,12 +29,10 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage,
-  limits: { fileSize: 25 * 1024 * 1024 } // 25MB
+  limits: { fileSize: 25 * 1024 * 1024 }
 });
 
-/* ====== ROTAS ANTIGAS (MANTIDAS) ====== */
 router.post("/", auth, (req, res) => {
-  // ✅ corrigido: platform estava sendo usado sem existir
   const { title, platform, waste_type, description } = req.body;
 
   db.query(
@@ -51,7 +48,6 @@ router.get("/", (req, res) => {
   });
 });
 
-/* ====== EDITAR JOGO ====== */
 router.put(
   "/:slug",
   auth,
@@ -67,7 +63,6 @@ router.put(
       platforms = [];
     }
 
-    // ✅ (mínimo necessário) aceitar links também, sem quebrar quando não vier
     let links = {};
     try {
       links = JSON.parse(req.body.links || "{}");
@@ -77,25 +72,83 @@ router.put(
     const linksJson = Object.keys(links).length ? JSON.stringify(links) : null;
 
     db.query(
-      `UPDATE games
-       SET title = ?, description = ?, youtube_id = ?, platforms_json = ?, links_json = COALESCE(?, links_json), waste_type = ?
-       WHERE slug = ?`,
-      [
-        title,
-        description,
-        youtubeId || null,
-        JSON.stringify(platforms),
-        linksJson,
-        waste_type || null,
-        slug
-      ],
-      (err) => {
-        if (err) {
-          console.error(err);
-          return res.status(500).json({ message: "Erro ao atualizar jogo." });
+      "SELECT id, created_by, cover_url FROM games WHERE slug = ?",
+      [slug],
+      (err, rows) => {
+        if (err) return res.status(500).json({ message: "Erro no servidor." });
+        if (!rows || rows.length === 0) return res.status(404).json({ message: "Jogo não encontrado." });
+
+        const game = rows[0];
+        if (game.created_by !== req.userId) {
+          return res.status(403).json({ message: "Você não pode editar este jogo." });
         }
 
-        return res.json({ message: "Jogo atualizado com sucesso!" });
+        let newCoverUrl = null;
+        if (req.files?.cover?.[0]) {
+          newCoverUrl = `uploads/${req.files.cover[0].filename}`;
+        }
+
+        const sql = `
+          UPDATE games
+          SET title = ?,
+              description = ?,
+              youtube_id = ?,
+              platforms_json = ?,
+              links_json = ?,
+              waste_type = ?
+              ${newCoverUrl ? ", cover_url = ?" : ""}
+          WHERE slug = ?
+        `;
+
+        const params = [
+          title,
+          description,
+          youtubeId || null,
+          JSON.stringify(platforms),
+          linksJson,
+          waste_type || null
+        ];
+
+        if (newCoverUrl) params.push(newCoverUrl);
+        params.push(slug);
+
+        db.query(sql, params, (err2) => {
+          if (err2) {
+            console.error(err2);
+            return res.status(500).json({ message: "Erro ao atualizar jogo." });
+          }
+
+          const mediaFiles = req.files?.media || [];
+          if (!mediaFiles.length) {
+            return res.json({ message: "Jogo atualizado com sucesso!" });
+          }
+
+          db.query("DELETE FROM game_media WHERE game_id = ?", [game.id], (err3) => {
+            if (err3) {
+              console.error(err3);
+              return res.status(500).json({ message: "Jogo atualizado, mas falhou ao substituir mídias." });
+            }
+
+            const inserts = mediaFiles.map((f, idx) => {
+              const isVideo = (f.mimetype || "").startsWith("video/");
+              const url = `uploads/${f.filename}`;
+              return [game.id, isVideo ? "video_file" : "image", url, idx];
+            });
+
+            db.query(
+              "INSERT INTO game_media (game_id, media_type, url, sort_order) VALUES ?",
+              [inserts],
+              (err4) => {
+                if (err4) {
+                  console.error(err4);
+                  return res.status(500).json({ message: "Jogo atualizado, mas falhou ao salvar novas mídias." });
+                }
+
+                return res.json({ message: "Jogo atualizado com sucesso!" });
+              }
+            );
+          });
+        });
       }
     );
   }
@@ -119,7 +172,6 @@ router.post(
         platforms = [];
       }
 
-      // ✅ CORREÇÃO PRINCIPAL: definir "links" (antes estava undefined e derrubava o servidor)
       let links = {};
       try {
         links = JSON.parse(req.body.links || "{}");
@@ -131,12 +183,14 @@ router.post(
       if (!title || !description) {
         return res.status(400).json({ message: "Informe title e description." });
       }
+
       if (!req.files?.cover?.[0]) {
         return res.status(400).json({ message: "Envie a capa (cover)." });
       }
 
       const baseSlug = slugify(title);
-      if (!baseSlug) return res.status(400).json({ message: "Título inválido para gerar slug." });
+      if (!baseSlug)
+        return res.status(400).json({ message: "Título inválido para gerar slug." });
 
       const coverFile = req.files.cover[0];
       const coverUrl = `uploads/${coverFile.filename}`;
@@ -154,8 +208,9 @@ router.post(
         if (err) return res.status(500).json({ message: "Erro ao gerar slug." });
 
         db.query(
-          `INSERT INTO games (title, slug, description, cover_url, youtube_id, platforms_json, links_json, waste_type, created_by)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          `INSERT INTO games 
+          (title, slug, description, cover_url, youtube_id, platforms_json, links_json, waste_type, created_by)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           [
             title,
             finalSlug,
@@ -163,7 +218,7 @@ router.post(
             coverUrl,
             youtubeId || null,
             JSON.stringify(platforms),
-            linksJson,
+            JSON.stringify(links),
             waste_type || null,
             req.userId
           ],
@@ -263,20 +318,19 @@ router.get("/slug/:slug", (req, res) => {
   });
 });
 
-// Lista resumida para a página jogos.html
 router.get("/list", (req, res) => {
   db.query(
-    `SELECT id, title, slug, cover_url, created_at
-     FROM games
-     ORDER BY id DESC`,
+    "SELECT id, title, slug, cover_url FROM games ORDER BY id DESC",
     (err, rows) => {
-      if (err) return res.status(500).json({ message: "Erro no servidor." });
-      res.json(rows);
+      if (err) {
+        console.error("ERRO /api/games/list:", err);
+        return res.status(500).json({ message: "Erro ao listar jogos." });
+      }
+      return res.json(rows);
     }
   );
 });
 
-// ===== NOVO: DELETAR JOGO (somente quem criou) =====
 router.delete("/:id", auth, (req, res) => {
   const gameId = Number(req.params.id);
   if (!gameId) return res.status(400).json({ message: "ID inválido." });

@@ -4,20 +4,28 @@ const db = require("../db");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
+const nodemailer = require("nodemailer");
 
-// REGISTER
+const transporter = nodemailer.createTransport({
+  host: process.env.MAIL_HOST,
+  port: Number(process.env.MAIL_PORT),
+  secure: process.env.MAIL_SECURE === "true",
+  auth: {
+    user: process.env.MAIL_USER,
+    pass: process.env.MAIL_PASS
+  }
+});
+
 router.post("/register", async (req, res) => {
   const { name, email, password } = req.body;
 
-  // 1) Checa se já existe
   db.query("SELECT id FROM users WHERE email = ?", [email], async (err, results) => {
     if (err) return res.status(500).json({ error: "Erro no servidor." });
 
     if (results.length > 0) {
-      return res.status(409).json({ error: "Esse email já está cadastrado." }); // 409 = conflito
+      return res.status(409).json({ error: "Esse email já está cadastrado." });
     }
 
-    // 2) Criptografa e insere
     const hash = await bcrypt.hash(password, 10);
 
     db.query(
@@ -32,7 +40,6 @@ router.post("/register", async (req, res) => {
 });
 
 
-// LOGIN
 router.post("/login", (req, res) => {
   const { email, password } = req.body;
 
@@ -45,12 +52,23 @@ router.post("/login", (req, res) => {
 
     if (!ok) return res.status(401).json({ error: "Senha inválida" });
 
-    const token = jwt.sign({ id: user.id }, "segredo123", { expiresIn: "2h" });
-    return res.json({ token });
+    const token = jwt.sign(
+      {
+        id: user.id,
+        username: user.name,
+        name: user.name
+      },
+      "segredo123",
+      { expiresIn: "2h" }
+    );
+
+    return res.json({
+      token,
+      username: user.name
+    });
   });
 });
 
-// FORGOT (gera token e só deixa seguir se o email existir)
 router.post("/forgot", (req, res) => {
   const { email } = req.body;
 
@@ -59,20 +77,42 @@ router.post("/forgot", (req, res) => {
     if (results.length === 0) return res.status(404).json({ error: "Email não encontrado" });
 
     const token = crypto.randomBytes(20).toString("hex");
-    const expires = new Date(Date.now() + 60 * 60 * 1000); // 1 hora
+    const expires = new Date(Date.now() + 60 * 60 * 1000);
 
     db.query(
       "UPDATE users SET reset_token = ?, reset_expires = ? WHERE email = ?",
       [token, expires, email],
       (err2) => {
         if (err2) return res.status(500).json({ error: "Erro ao gerar token." });
-        return res.json({ token }); // front redireciona para reset.html?token=...
+
+const resetLink = `${process.env.APP_URL}/reset.html?token=${token}`;
+
+transporter.sendMail(
+  {
+    from: process.env.MAIL_USER,
+    to: email,
+    subject: "EcoPlay Critics - Recuperação de senha",
+    html: `
+      <p>Você pediu para redefinir sua senha.</p>
+      <p>Clique no link abaixo para criar uma nova senha:</p>
+      <p><a href="${resetLink}">${resetLink}</a></p>
+      <p>Este link expira em 1 hora.</p>
+    `
+  },
+  (mailErr) => {
+    if (mailErr) {
+      console.error(mailErr);
+      return res.status(500).json({ error: "Erro ao enviar email." });
+    }
+
+    return res.json({ message: "Email de recuperação enviado!" });
+  }
+);
       }
     );
   });
 });
 
-// RESET (troca a senha usando token válido)
 router.post("/reset", async (req, res) => {
   const { token, password } = req.body;
 

@@ -34,6 +34,17 @@ CREATE TABLE game_media (
   FOREIGN KEY (game_id) REFERENCES games(id) ON DELETE CASCADE
 );
 
+CREATE TABLE game_comments (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  game_id INT NOT NULL,
+  user_id INT NOT NULL,
+  comment TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+  FOREIGN KEY (game_id) REFERENCES games(id) ON DELETE CASCADE,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
 INSERT INTO games
 (title, slug, description, cover_url, youtube_id, platforms_json, links_json, waste_type, created_by)
 VALUES
@@ -47,9 +58,9 @@ VALUES
 '{
  "steam":"https://store.steampowered.com/app/883360/Beyond_Blue/",
  "epic":"https://store.epicgames.com/p/beyond-blue",
- "playstation":"https://store.playstation.com/",
- "xbox":"https://www.xbox.com/",
- "switch":"https://www.nintendo.com/"
+ "playstation":"https://store.playstation.com/product/UP2159-CUSA18922_00-BEYONDBLUESIEA00",
+ "xbox":"https://www.xbox.com/games/store/beyond-blue/9nvnnrk91z81",
+ "switch":"https://www.nintendo.com/store/products/beyond-blue-switch/"
 }',
 'ambiental',
 1
@@ -65,8 +76,8 @@ VALUES
 'img/plasticity.jpg',
 '["steam","linux"]',
 '{
- "steam":"https://store.steampowered.com/",
- "linux":"https://store.epicgames.com/"
+ "steam":"https://store.steampowered.com/app/1069360/Plasticity/",
+ "linux":"https://store.steampowered.com/app/1069360/Plasticity/"
 }',
 'plástico',
 1
@@ -83,9 +94,12 @@ VALUES
 'CFw7lPW6WOA',
 '["steam","epic","linux","switch","android","apple"]',
 '{
- "steam":"https://store.steampowered.com/",
- "epic":"https://store.epicgames.com/",
- "switch":"https://www.nintendo.com/"
+ "steam":"https://store.steampowered.com/app/1593030/Terra_Nil/",
+ "epic":"https://store.epicgames.com/p/terra-nil-508d16",
+ "linux":"https://store.steampowered.com/app/1593030/Terra_Nil/",
+ "switch":"https://www.nintendo.com/store/products/terra-nil-switch/",
+ "android":"https://play.google.com/store/apps/details?id=com.netflix.NGP.TerraNil&hl",
+ "apple":"https://apps.apple.com/app/terra-nil/id1643974911"
 }',
 'recuperação ambiental',
 1
@@ -100,10 +114,15 @@ VALUES
 'Explore uma ilha mediterrânea e ajude a proteger os animais e o meio ambiente.',
 'img/Alba.jpg',
 'a-Eu9WE3grA',
-'["steam","epic","linux","playstation","xbox","switch","android","apple"]',
+'["steam","epic","linux","playstation","xbox","switch","apple"]',
 '{
- "steam":"https://store.steampowered.com/",
- "epic":"https://store.epicgames.com/"
+ "steam":"https://store.steampowered.com/app/1337010/Alba_A_Wildlife_Adventure/",
+ "epic":"https://store.epicgames.com/p/alba-a-wildlife-adventure-93736a",
+ "linux":"https://store.steampowered.com/app/1337010/Alba_A_Wildlife_Adventure/",
+ "playstation":"https://store.playstation.com/product/UP1309-PPSA03132_00-ALBAADVENTUREPS5",
+ "xbox":"https://www.xbox.com/games/store/alba-a-wildlife-adventure/9NC05CGPWG0Z",
+ "switch":"https://www.nintendo.com/store/products/alba-a-wildlife-adventure-switch/",
+ "apple":"https://apps.apple.com/us/app/alba-a-wildlife-adventure/id1528014682"
 }',
 'preservação',
 1
@@ -120,14 +139,21 @@ VALUES
 'kiM2_XB_HZE',
 '["steam","epic","linux","playstation","xbox","switch","android","apple"]',
 '{
- "steam":"https://store.steampowered.com/"
+ "steam":"https://store.steampowered.com/app/898890/Endling__Extinction_is_Forever/",
+ "epic":"https://store.epicgames.com/p/endling-extinction-is-forever",
+ "linux":"https://store.steampowered.com/app/898890/Endling__Extinction_is_Forever/",
+ "playstation":"https://store.playstation.com/product/UP0977-PPSA08511_00-3064604549696432",
+ "xbox":"https://www.xbox.com/games/store/endling-extinction-is-forever/9p42dsxnccdg",
+ "switch":"https://www.nintendo.com/store/products/endling-extinction-is-forever-switch/",
+ "android":"https://play.google.com/store/apps/details?id=com.hg.endling&hl",
+ "apple":"https://apps.apple.com/app/endling/id1625083646"
 }',
 'extinção animal',
 1
 );
 
 INSERT INTO games
-(title, slug, description, cover_url, youtube_id, platforms_json, waste_type, created_by)
+(title, slug, description, cover_url, youtube_id, platforms_json, links_json, waste_type, created_by)
 VALUES
 (
 'Seeds of Resilience',
@@ -135,13 +161,20 @@ VALUES
 'Construa uma vila sustentável enfrentando desastres naturais e aprendendo a respeitar a natureza.',
 'img/seeds.jpg',
 'BrLUHKkthdY',
-'["steam","linux","switch"]',
+'["steam","linux","playstation", "xbox", "switch"]',
+'{
+ "steam":"https://store.steampowered.com/app/877080/Seeds_of_Resilience/",
+ "linux":"https://store.steampowered.com/app/877080/Seeds_of_Resilience/",
+ "playstation":"https://store.playstation.com/product/UP4199-CUSA25868_00-8045343880742294",
+ "xbox":"https://www.xbox.com/games/store/seeds-of-resilience/9nrfdw1klm6s",
+ "switch":"https://store.steampowered.com/https://www.nintendo.com/pt-pt/Jogos/Aplicacoes-de-download-da-Nintendo-Switch/Seeds-of-Resilience-1797819.html/"
+}',
 'sustentabilidade',
 1
 );
 
 INSERT INTO games
-(title, slug, description, cover_url, youtube_id, platforms_json, waste_type, created_by)
+(title, slug, description, cover_url, youtube_id, platforms_json, links_json, waste_type, created_by)
 VALUES
 (
 'Eco',
@@ -150,12 +183,16 @@ VALUES
 'img/Eco.jpg',
 'd6zvBdUDMPY',
 '["steam","linux"]',
+'{
+ "steam":"https://store.steampowered.com/app/382310/Eco/",
+ "linux":"https://store.steampowered.com/app/382310/Eco/"
+}',
 'ecossistema',
 1
 );
 
 INSERT INTO games
-(title, slug, description, cover_url, youtube_id, platforms_json, waste_type, created_by)
+(title, slug, description, cover_url, youtube_id, platforms_json, links_json, waste_type, created_by)
 VALUES
 (
 'Fate of the World',
@@ -163,13 +200,17 @@ VALUES
 'Jogo de estratégia global focado em mudanças climáticas e políticas ambientais.',
 'img/fate-of-the-world.jpg',
 'pDU-g947NJk',
-'["steam","linux","apple"]',
+'["steam","linux"]',
+'{
+ "steam":"https://store.steampowered.com/app/80200/Fate_of_the_World/",
+ "linux":"https://store.steampowered.com/app/80200/Fate_of_the_World/",
+}',
 'mudanças climáticas',
 1
 );
 
 INSERT INTO games
-(title, slug, description, cover_url, youtube_id, platforms_json, waste_type, created_by)
+(title, slug, description, cover_url, youtube_id, platforms_json, links_json, waste_type, created_by)
 VALUES
 (
 'Flower',
@@ -177,7 +218,12 @@ VALUES
 'Experiência relaxante onde você controla o vento e interage com a natureza.',
 'img/flower.jpg',
 '0IS9sGGuvYo',
-'["steam","linux"]',
+'["steam","linux", "playstation"]',
+'{
+ "steam":"https://store.steampowered.com/app/966330/Flower/",
+ "linux":"https://store.steampowered.com/app/966330/Flower/",
+ "playstation":"https://store.playstation.com/product/UP9000-CUSA00092_00-FLOWERPS4000FULL"
+}',
 'natureza',
 1
 );

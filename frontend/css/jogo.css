@@ -126,7 +126,11 @@ body{
   display: block;
 }
 
-.page{padding:22px 30px;}
+.page{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
 
 .top{
   display:grid;
@@ -136,30 +140,28 @@ body{
 }
 
 .banner-wrap{
-  position: relative;
-  background:#e8e8e8;
-  border-radius: 8px;
-  overflow: hidden;
-
-  width: 100%;
-  max-width: 1000px;   /* controla o tamanho geral do site */
-  aspect-ratio: 16 / 9; /* ⭐ aqui vira 1920x1080 proporcional */
-  margin: 0 auto;
+  position:relative;
+  background:#111;
+  border-radius:8px;
+  overflow:hidden;
+  height:360px;
 }
 
-/* imagem ou vídeo dentro do banner */
 .banner img,
 .banner video,
 .banner iframe{
   width:100%;
   height:100%;
-  object-fit: cover;   /* ⭐ impede deformação */
+  object-fit: cover;
+  object-position: center;
   display:block;
 }
 
 .banner{
   width:100%;
   height:100%;
+  object-fit:contain;
+  display:block;
 }
 .nav-btn{
   position:absolute;
@@ -193,9 +195,12 @@ body{
 }
 
 .cover{
-  width:220px;height:240px;
+  width:240px;
+  height:auto;
+  aspect-ratio: 2 / 3;
   object-fit:cover;
-  border-radius:4px;
+  border-radius:8px;
+  display:block;
 }
 
 .platforms{
@@ -214,7 +219,7 @@ body{
 }
 
 .platform img {
-  width: 52px;   /* ajusta pro seu layout */
+  width: 52px;
   height: 52px;
   object-fit: contain;
 }
@@ -270,4 +275,64 @@ body{
 
 .danger:hover {
   transform: scale(1.05);
+}
+
+.edit {
+  background-color: #bacc14;
+  color: #000;
+  border: none;
+  padding: 12px 28px;
+  font-size: 18px;
+  font-family: inherit;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.edit:hover {
+  transform: scale(1.05);
+}
+
+.owner-actions{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin-top:10px;
+}
+
+.comments{
+  margin-top:40px;
+}
+
+.comment{
+  background:#1c1c1c;
+  padding:12px;
+  border-radius:6px;
+  margin-bottom:12px;
+}
+
+.comment b{
+  color:#9be28f;
+}
+
+.comment small{
+  margin-left:10px;
+  color:#aaa;
+  font-size:12px;
+}
+
+.comment-form textarea{
+  width:100%;
+  height:80px;
+  margin-top:10px;
+  resize:none;
+}
+
+.comment-form button{
+  margin-top:8px;
+  background:#3fb950;
+  border:none;
+  padding:8px 14px;
+  border-radius:6px;
+  cursor:pointer;
 }

@@ -10,10 +10,11 @@
 </head>
 <body>
 
-<!-- ===== NAVBAR (igual às outras páginas) ===== -->
 <header class="navbar">
   <div class="brand">
-    <img src="img/logo.png" class="logo-img" alt="EcoPlay Critics">
+    <a href="index.html" class="logo-link">
+      <img src="img/logo.png" alt="EcoPlay Critics" class="logo-img">
+    </a>
   </div>
 
   <nav class="navlinks">
@@ -38,10 +39,8 @@
     </div>
 </header>
 
-<!-- ===== CONTEÚDO ===== -->
 <main class="help">
 
-  <!-- FORMULÁRIO -->
   <div class="help-box" id="formBox">
     <select id="tipoProblema">
       <option value="">Selecione o tipo de Problema</option>
@@ -56,7 +55,6 @@
     <button onclick="enviarRelatorio()">Enviar</button>
   </div>
 
-  <!-- CONFIRMAÇÃO -->
   <div class="help-box success" id="successBox">
     <h1>Relatório Enviado!</h1>
 

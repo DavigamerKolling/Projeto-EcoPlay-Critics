@@ -19,7 +19,6 @@ body {
   color: #222;
 }
 
-/* ===== NAVBAR ===== */
 .navbar {
   background: black;
   color: white;
@@ -29,13 +28,11 @@ body {
   justify-content: space-between;
 }
 
-/* Logo */
 .logo-img {
   height: 70px;
   object-fit: contain;
 }
 
-/* Menu central */
 .navlinks {
   display: flex;
   align-items: center;
@@ -45,7 +42,7 @@ body {
 .navlinks a {
   color: white;
   text-decoration: none;
-  font-family: Georgia, serif;
+  font-family: "IM Fell English SC", serif;
   font-size: 18px;
 }
 
@@ -53,14 +50,12 @@ body {
   color: white;
 }
 
-/* Área direita */
 .navright {
   display: flex;
   align-items: center;
   gap: 20px;
 }
 
-/* Barra de pesquisa */
 .searchwrap {
   position: relative;
 }
@@ -84,7 +79,6 @@ body {
   font-size: 14px;
 }
 
-/* Botão Login */
 .logo-img {
   height: 100px;
   margin-left: -40px;
@@ -105,14 +99,13 @@ body {
   background: #27ae60;
 }
 
-/* ===== HOME ===== */
 .home {
-  height: calc(100vh - 80px);
+  min-height: calc(100vh - 80px);
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   text-align: center;
+  padding-top: 40px;
 }
 
 .home h1 {
@@ -125,6 +118,21 @@ body {
   font-size: 18px;
   margin-bottom: 40px;
   color: #555;
+}
+
+.hero-logo{
+  display:block;
+  width: 600px;
+  max-width: 90%;
+  height: auto;
+}
+
+.hero-content{
+  margin-top: auto;
+  margin-bottom: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .buttons {

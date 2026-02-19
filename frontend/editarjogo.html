@@ -8,10 +8,11 @@
   <link rel="stylesheet" href="css/criarjogo.css" />
 </head>
 <body>
-  <!-- NAVBAR -->
   <header class="navbar">
     <div class="brand">
-      <img src="img/logo.png" alt="EcoPlay Critics" class="logo-img" />
+      <a href="index.html" class="logo-link">
+       <img src="img/logo.png" alt="EcoPlay Critics" class="logo-img">
+     </a>
     </div>
 
     <nav class="navlinks">
@@ -43,18 +44,29 @@
       <textarea id="description" class="area" placeholder="Descrição do Jogo" required></textarea>
 
       <label class="lbl">Capa do Jogo:</label>
-      <input id="cover" type="file" accept="image/*" required />
+      <input id="cover" type="file" accept="image/*" />
       <button class="mini-btn" type="button" id="btnCoverInfo">Enviar</button>
 
+      <div id="currentCoverWrap" style="margin-top:10px;">
+        <p style="font-size:12px;opacity:.8;margin-bottom:6px;">Capa atual:</p>
+        <img id="currentCover" src="" alt="Capa atual" style="width:180px;height:220px;object-fit:cover;border-radius:6px;display:none;">
+      </div>
+
       <label class="lbl">Imagens e Vídeos do Jogo:</label>
-      <!-- imagens/vídeos locais (mp4/webm) -->
       <input id="mediaFiles" type="file" accept="image/*,video/*" multiple />
       <button class="mini-btn" type="button" id="btnMediaInfo">Enviar</button>
+
+      <div id="currentMediaWrap" style="margin-top:10px;">
+        <p style="font-size:12px;opacity:.8;margin-bottom:6px;">Mídias atuais:</p>
+        <div id="currentMedia" style="display:flex;gap:10px;flex-wrap:wrap;"></div>
+        <p style="font-size:12px;opacity:.75;margin-top:8px;">
+          Se você não selecionar novos arquivos, o jogo mantém as mídias atuais.
+        </p>
+      </div>
 
       <label class="lbl">Trailer (YouTube) - opcional:</label>
       <input id="youtube" class="inp" type="text" placeholder="Cole o link do YouTube (opcional)" />
 
-      <!-- 8 plataformas (inclui Android que você já adicionou) -->
       <select class="sel" id="plat1"><option value="">Plataforma 1</option></select>
       <select class="sel" id="plat2"><option value="">Plataforma 2</option></select>
       <select class="sel" id="plat3"><option value="">Plataforma 3</option></select>
@@ -64,7 +76,17 @@
       <select class="sel" id="plat7"><option value="">Plataforma 7</option></select>
       <select class="sel" id="plat8"><option value="">Plataforma 8</option></select>
 
-      <button class="main-btn" type="submit">Salvar Alterações</button>
+      <label class="lbl">Links do jogo nas plataformas (opcional):</label>
+      <input id="linkSteam" class="inp" type="text" placeholder="Link Steam" />
+      <input id="linkEpic" class="inp" type="text" placeholder="Link Epic Games" />
+      <input id="linkPlaystation" class="inp" type="text" placeholder="Link PlayStation" />
+      <input id="linkXbox" class="inp" type="text" placeholder="Link Xbox" />
+      <input id="linkSwitch" class="inp" type="text" placeholder="Link Nintendo Switch" />
+      <input id="linkAndroid" class="inp" type="text" placeholder="Link Android (Play Store)" />
+      <input id="linkApple" class="inp" type="text" placeholder="Link Apple (App Store)" />
+      <input id="linkLinux" class="inp" type="text" placeholder="Link Linux (site/loja)" />
+
+      <button id="submitGame" class="main-btn" type="submit">Salvar Alterações</button>
       <p id="msg" class="msg"></p>
     </form>
   </main>

@@ -9,10 +9,11 @@
 </head>
 <body>
 
-  <!-- ===== HEADER / NAVBAR ===== -->
   <header class="navbar">
     <div class="brand">
-      <img src="img/logo.png" alt="EcoPlay Critics" class="logo-img">
+      <a href="index.html" class="logo-link">
+       <img src="img/logo.png" alt="EcoPlay Critics" class="logo-img">
+     </a>
     </div>
 
     <nav class="navlinks">
@@ -33,16 +34,22 @@
     </div>
   </header>
 
-  <!-- ===== CONTEÚDO ===== -->
   <main class="main">
     <div class="card">
       <h1>Esqueci Minha Senha</h1>
       <div class="divider"></div>
 
-      <div class="form-forgot">
-        <input type="email" id="email" placeholder="Email" required>
-        <button type="button" onclick="recuperar()">Enviar</button>
+      <div id="formBox">
+        <div class="form-forgot">
+          <input type="email" id="email" placeholder="Email" required>
+          <button type="button" onclick="recuperar()">Enviar</button>
+        </div>
       </div>
+
+      <div id="successBox" style="display:none;">
+        <p>Se este email existir, você receberá um link para redefinir sua senha.</p>
+      </div>
+
     </div>
   </main>
 

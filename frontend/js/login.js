@@ -18,6 +18,7 @@ form.addEventListener("submit", async (e) => {
 
   if (data.token) {
     localStorage.setItem("token", data.token);
+    localStorage.setItem("username", data.username);
     window.location.href = "jogos.html";
   } else {
     alert("Login inválido");

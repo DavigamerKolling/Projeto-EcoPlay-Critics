@@ -12,3 +12,6 @@ app.use("/games", require("./routes/games"));
 app.listen(3000, () => {
   console.log("Servidor rodando na porta 3000");
 });
+
+const commentsRoutes = require("./routes/comments");
+app.use("/api/comments", commentsRoutes);
